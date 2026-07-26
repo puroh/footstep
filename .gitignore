@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!tragon_frontend/src/lib/
 lib64/
 parts/
 sdist/
@@ -216,3 +217,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node.js
+node_modules/
+dist/
+.astro/
