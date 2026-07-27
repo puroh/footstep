@@ -23,6 +23,11 @@
         "executionId": "d104beac-0938-421a-993f-09da995009c1",
         "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
         "timestamp": 1785121705190
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121791868
       }
     ],
     "1.3 Create `create_public_order` view with `OrderCreateThrottle` in `apps/orders/views.py`": [
@@ -61,6 +66,16 @@
         "executionId": "d104beac-0938-421a-993f-09da995009c1",
         "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
         "timestamp": 1785121706071
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121793664
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785122822623
       }
     ],
     "2.2 Wire Telegram notification into `create_public_order` view": [

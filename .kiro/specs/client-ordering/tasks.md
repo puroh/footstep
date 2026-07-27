@@ -14,7 +14,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Run `python manage.py makemigrations orders` and apply
     - _Requirements: 4.1, 7.2_
 
-  - [~] 1.2 Create `PublicOrderCreateSerializer` in `apps/orders/serializers.py`
+  - [-] 1.2 Create `PublicOrderCreateSerializer` in `apps/orders/serializers.py`
     - Implement nested serializers: `OrderItemToppingCreateSerializer`, `OrderItemCreateSerializer`, `PublicOrderCreateSerializer`
     - Validate restaurant slug, product ownership, topping ownership, address fields for delivery, bill_denomination for cash
     - Compute total (base_price + toppings) * quantity + delivery fee
@@ -43,7 +43,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - _Requirements: 7.5, 7.6_
 
 - [ ] 2. Backend: Telegram notification service
-  - [~] 2.1 Create `apps/notifications/` Django app with `services.py`
+  - [x] 2.1 Create `apps/notifications/` Django app with `services.py`
     - Implement `format_order_message(order)` — builds Markdown-formatted message with items, toppings, delivery type, address, payment, total
     - Implement `send_order_telegram_notification(order)` — fire-and-forget using `python-telegram-bot==22.2`, logs errors without raising
     - Add `python-telegram-bot==22.2` to requirements
