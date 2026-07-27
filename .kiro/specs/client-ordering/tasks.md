@@ -62,7 +62,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
 - [x] 3. Checkpoint — Backend verification
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 4. Frontend: Astro SSR page and menu display
+- [x] 4. Frontend: Astro SSR page and menu display
   - [x] 4.1 Create `src/pages/[slug]/index.astro` with SSR data fetching
     - Fetch restaurant data from `/api/v1/restaurants/{slug}/public/`
     - Fetch menu from `/api/v1/catalog/{slug}/menu/`
@@ -76,7 +76,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Render `ProductCard` components (photo + name, tap to open detail)
     - _Requirements: 2.1, 2.2, 2.3_
 
-  - [ ] 4.3 Create `ProductDetail` modal component
+  - [x] 4.3 Create `ProductDetail` modal component
     - Display photo, name, ingredients, toppings with checkboxes and prices, special instructions textarea
     - "Accept" button adds item to cart and closes modal
     - "Cancel" button discards and closes modal
