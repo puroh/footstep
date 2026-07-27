@@ -23,6 +23,9 @@ echo "    postgres is ready."
 echo "==> Running migrations..."
 docker compose exec backend uv run python manage.py migrate --noinput
 
+echo "==> Collecting static files..."
+docker compose exec backend uv run python manage.py collectstatic --noinput
+
 # --- Verification ---
 
 echo ""
