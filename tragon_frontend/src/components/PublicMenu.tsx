@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useStore } from "@nanostores/react";
 import { $cartItems, $cartItemCount, $cartSubtotal, addToCart, clearCart, removeFromCart, type CartItem, type CartItemTopping } from "@/stores/cart";
 import { computeOrderTotal, formatPrice } from "@/lib/pricing";
-import { validateAddress, buildAddressLine, STREET_TYPES, type AddressFields } from "@/lib/validation";
+import { validateAddress, buildAddressLine, type AddressFields } from "@/lib/validation";
 
 // Types
 interface Topping { id: string; name: string; extra_price: number; is_active: boolean; }
@@ -24,7 +24,7 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
   const [step, setStep] = useState<Step>("menu");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [deliveryType, setDeliveryType] = useState<DeliveryType>("delivery");
-  const [address, setAddress] = useState<AddressFields>({ street_type: "Calle", road_number: "", cross_number: "", building_number: "", neighborhood: "", city: "", address_details: "" });
+  const [address, setAddress] = useState<AddressFields>({ phone: "", address: "", neighborhood: "", city: "" });
   const [addressErrors, setAddressErrors] = useState<Record<string, string>>({});
   const [selectedPaymentId, setSelectedPaymentId] = useState<string>("");
   const [cashDenomination, setCashDenomination] = useState<string>("");
@@ -43,24 +43,38 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
   // Compute totals
   const orderTotal = computeOrderTotal(cartItems, restaurant.delivery_fee, deliveryType);
 
+  // Auto-select first payment method if only one exists or none selected
+  useEffect(() => {
+    if (step === "payment" && !selectedPaymentId && paymentMethods.length > 0) {
+      setSelectedPaymentId(paymentMethods[0].id);
+    }
+  }, [step, paymentMethods, selectedPaymentId]);
+
   function handlePay() {
     if (cartCount === 0) return;
     setStep("delivery");
   }
 
   function handleDeliveryNext() {
-    if (deliveryType === "delivery") {
-      setStep("address");
-    } else {
-      setStep("payment");
-    }
+    setStep("address");
   }
 
   function handleAddressNext() {
-    const errors = validateAddress(address);
-    if (Object.keys(errors).length > 0) {
-      setAddressErrors(errors);
-      return;
+    if (deliveryType !== "delivery") {
+      const phoneErrors: Record<string, string> = {};
+      if (!address.phone || !address.phone.trim()) {
+        phoneErrors.phone = "Este campo es obligatorio";
+      }
+      if (Object.keys(phoneErrors).length > 0) {
+        setAddressErrors(phoneErrors);
+        return;
+      }
+    } else {
+      const errors = validateAddress(address);
+      if (Object.keys(errors).length > 0) {
+        setAddressErrors(errors);
+        return;
+      }
     }
     setAddressErrors({});
     setStep("payment");
@@ -92,6 +106,7 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
       delivery_type: deliveryType,
       payment_method_id: selectedPaymentId,
       address_line: deliveryType === "delivery" ? buildAddressLine(address) : "",
+      customer_phone: address.phone,
       cash_denomination: selectedPm.type === "cash" ? parseInt(cashDenomination) : null,
       telegram_chat_id: "",
     };
@@ -140,7 +155,7 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
     return (
       <div className="min-h-screen bg-gray-50 p-4">
         <div className="max-w-lg mx-auto">
-          <button onClick={() => setStep(deliveryType === "delivery" ? "address" : "delivery")} className="text-blue-600 mb-4">← Volver</button>
+          <button onClick={() => setStep("address")} className="text-blue-600 mb-4">← Volver</button>
           <h2 className="text-xl font-bold mb-4">Método de pago</h2>
           <div className="space-y-3 mb-6">
             {paymentMethods.map(pm => (
@@ -191,28 +206,37 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
       <div className="min-h-screen bg-gray-50 p-4">
         <div className="max-w-lg mx-auto">
           <button onClick={() => setStep("delivery")} className="text-blue-600 mb-4">← Volver</button>
-          <h2 className="text-xl font-bold mb-4">Dirección de entrega</h2>
+          <h2 className="text-xl font-bold mb-4">{deliveryType === "delivery" ? "Datos de entrega" : "Datos de contacto"}</h2>
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de vía</label>
-              <select value={address.street_type} onChange={e => setAddress({...address, street_type: e.target.value})} className={`w-full border rounded-lg p-3 ${addressErrors.street_type ? "border-red-500" : ""}`}>
-                {STREET_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-              </select>
-              {addressErrors.street_type && <p className="text-red-500 text-xs mt-1">{addressErrors.street_type}</p>}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono de contacto</label>
+              <input type="tel" value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} placeholder="Ej: 3001234567" className={`w-full border rounded-lg p-3 ${addressErrors.phone ? "border-red-500" : ""}`} />
+              {addressErrors.phone && <p className="text-red-500 text-xs mt-1">{addressErrors.phone}</p>}
             </div>
-            {(["road_number", "cross_number", "building_number", "neighborhood", "city"] as const).map(field => (
-              <div key={field}>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {{road_number: "Número de vía", cross_number: "Número de cruce", building_number: "Número de predio", neighborhood: "Barrio", city: "Ciudad"}[field]}
-                </label>
-                <input type="text" value={address[field]} onChange={e => setAddress({...address, [field]: e.target.value})} className={`w-full border rounded-lg p-3 ${addressErrors[field] ? "border-red-500" : ""}`} />
-                {addressErrors[field] && <p className="text-red-500 text-xs mt-1">{addressErrors[field]}</p>}
-              </div>
-            ))}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Detalles adicionales (opcional)</label>
-              <input type="text" value={address.address_details} onChange={e => setAddress({...address, address_details: e.target.value})} placeholder="Apto, piso, torre..." className="w-full border rounded-lg p-3" />
-            </div>
+            {deliveryType === "delivery" && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                  <input type="text" value={address.address} onChange={e => setAddress({...address, address: e.target.value})} placeholder="Ej: Calle 45 #23-12, Apto 301" className={`w-full border rounded-lg p-3 ${addressErrors.address ? "border-red-500" : ""}`} />
+                  {addressErrors.address && <p className="text-red-500 text-xs mt-1">{addressErrors.address}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Barrio</label>
+                  <input type="text" value={address.neighborhood} onChange={e => setAddress({...address, neighborhood: e.target.value})} placeholder="Ej: Laureles" className={`w-full border rounded-lg p-3 ${addressErrors.neighborhood ? "border-red-500" : ""}`} />
+                  {addressErrors.neighborhood && <p className="text-red-500 text-xs mt-1">{addressErrors.neighborhood}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad</label>
+                  <input type="text" value={address.city} onChange={e => setAddress({...address, city: e.target.value})} placeholder="Ej: Medellín" className={`w-full border rounded-lg p-3 ${addressErrors.city ? "border-red-500" : ""}`} />
+                  {addressErrors.city && <p className="text-red-500 text-xs mt-1">{addressErrors.city}</p>}
+                </div>
+                {/* Mini map */}
+                <div className="mt-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Marca tu ubicación (opcional)</label>
+                  <DeliveryMapPicker />
+                </div>
+              </>
+            )}
           </div>
           <button onClick={handleAddressNext} className="w-full bg-green-600 text-white py-3 rounded-lg font-medium mt-6">Continuar</button>
         </div>
@@ -395,5 +419,47 @@ function ProductDetailModal({ product, onClose }: { product: Product; onClose: (
         </div>
       </div>
     </div>
+  );
+}
+
+// --- DELIVERY MAP PICKER ---
+function DeliveryMapPicker() {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!mapRef.current || mapInstanceRef.current) return;
+
+    import("leaflet").then((L) => {
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+        iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+      });
+
+      const map = L.map(mapRef.current!).setView([4.6097, -74.0817], 6);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; OpenStreetMap',
+        maxZoom: 19,
+      }).addTo(map);
+
+      let marker: any = null;
+      map.on("click", (e: any) => {
+        if (marker) marker.setLatLng(e.latlng);
+        else marker = L.marker(e.latlng).addTo(map);
+      });
+
+      mapInstanceRef.current = map;
+    });
+
+    return () => { mapInstanceRef.current?.remove(); mapInstanceRef.current = null; };
+  }, []);
+
+  return (
+    <>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+      <div ref={mapRef} className="w-full h-48 rounded-lg border border-gray-300" />
+    </>
   );
 }

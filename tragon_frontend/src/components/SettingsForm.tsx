@@ -1,13 +1,17 @@
-import { useState, useEffect, type FormEvent, type ChangeEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent, type ChangeEvent } from "react";
 import { apiGet, apiPatch, apiPost, apiDelete } from "@/lib/api";
 
 // Types
 
 interface RestaurantProfile {
+  slug: string;
   name: string;
   address_line: string;
   delivery_fee: string;
   logo_url: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  phone_number: string;
 }
 
 interface PaymentMethod {
@@ -25,23 +29,35 @@ const PAYMENT_TYPE_LABELS: Record<PaymentMethodType, string> = {
   transfer_with_key: "Transferencia con clave",
 };
 
+// Default coordinates (Colombia center)
+const DEFAULT_LAT = 4.6097;
+const DEFAULT_LNG = -74.0817;
+
 // Main component
 
 export default function SettingsForm() {
   // Profile state
   const [profile, setProfile] = useState<RestaurantProfile>({
+    slug: "",
     name: "",
     address_line: "",
     delivery_fee: "",
     logo_url: null,
+    latitude: null,
+    longitude: null,
+    phone_number: "",
   });
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileMessage, setProfileMessage] = useState("");
   const [profileError, setProfileError] = useState("");
+  const [slugCopied, setSlugCopied] = useState(false);
 
   // Logo upload state
   const [logoUploading, setLogoUploading] = useState(false);
+
+  // Map state
+  const [mapReady, setMapReady] = useState(false);
 
   // Payment methods state
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
@@ -61,6 +77,7 @@ export default function SettingsForm() {
   useEffect(() => {
     fetchProfile();
     fetchPaymentMethods();
+    setMapReady(true);
   }, []);
 
   // --- Profile ---
@@ -72,10 +89,14 @@ export default function SettingsForm() {
       if (res.ok) {
         const data = await res.json();
         setProfile({
+          slug: data.slug ?? "",
           name: data.name ?? "",
           address_line: data.address_line ?? "",
           delivery_fee: data.delivery_fee ?? "",
           logo_url: data.logo_url ?? null,
+          latitude: data.latitude ?? null,
+          longitude: data.longitude ?? null,
+          phone_number: data.phone_number ?? "",
         });
       } else {
         setProfileError("No se pudo cargar el perfil.");
@@ -98,6 +119,9 @@ export default function SettingsForm() {
         name: profile.name,
         address_line: profile.address_line,
         delivery_fee: profile.delivery_fee,
+        latitude: profile.latitude,
+        longitude: profile.longitude,
+        phone_number: profile.phone_number,
       });
 
       if (res.ok) {
@@ -137,9 +161,19 @@ export default function SettingsForm() {
       setProfileError("Error de conexión al subir el logo.");
     } finally {
       setLogoUploading(false);
-      // Reset input so the same file can be re-selected
       e.target.value = "";
     }
+  }
+
+  function handleCopySlug() {
+    const publicUrl = `${window.location.origin}/${profile.slug}`;
+    navigator.clipboard.writeText(publicUrl);
+    setSlugCopied(true);
+    setTimeout(() => setSlugCopied(false), 2000);
+  }
+
+  function handleMapClick(lat: number, lng: number) {
+    setProfile((prev) => ({ ...prev, latitude: lat, longitude: lng }));
   }
 
   // --- Payment Methods ---
@@ -251,6 +285,30 @@ export default function SettingsForm() {
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Perfil del restaurante</h2>
 
         <form onSubmit={handleProfileSubmit} className="space-y-4">
+          {/* Slug (read-only) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Enlace público (slug)
+            </label>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 px-3 py-2 bg-gray-100 border border-gray-200 rounded-md text-sm text-gray-700 font-mono">
+                {window.location.origin}/{profile.slug}
+              </div>
+              <button
+                type="button"
+                onClick={handleCopySlug}
+                className={`px-3 py-2 text-sm rounded-md font-medium transition-colors ${
+                  slugCopied
+                    ? "bg-green-100 text-green-700 border border-green-300"
+                    : "bg-orange-600 text-white hover:bg-orange-700"
+                }`}
+              >
+                {slugCopied ? "✓ Copiado" : "Copiar enlace"}
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Comparte este enlace con tus clientes para que vean tu menú.</p>
+          </div>
+
           {/* Logo */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Logo</label>
@@ -266,8 +324,8 @@ export default function SettingsForm() {
                   <span className="text-gray-400 text-xs">Sin logo</span>
                 </div>
               )}
-              <label className="cursor-pointer inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                {logoUploading ? "Subiendo..." : "Cambiar logo"}
+              <label className="cursor-pointer inline-flex items-center px-3 py-2 bg-orange-600 text-white text-sm font-medium rounded-md hover:bg-orange-700 transition-colors">
+                {logoUploading ? "Subiendo..." : "📷 Cambiar logo"}
                 <input
                   type="file"
                   accept="image/*"
@@ -308,6 +366,21 @@ export default function SettingsForm() {
             />
           </div>
 
+          {/* Phone Number */}
+          <div>
+            <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-1">
+              Teléfono del restaurante
+            </label>
+            <input
+              id="phone_number"
+              type="tel"
+              value={profile.phone_number}
+              onChange={(e) => setProfile((p) => ({ ...p, phone_number: e.target.value }))}
+              placeholder="Ej: 3001234567"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+
           {/* Delivery Fee */}
           <div>
             <label htmlFor="delivery_fee" className="block text-sm font-medium text-gray-700 mb-1">
@@ -316,12 +389,32 @@ export default function SettingsForm() {
             <input
               id="delivery_fee"
               type="number"
-              step="0.01"
+              step="1"
               min="0"
               value={profile.delivery_fee}
               onChange={(e) => setProfile((p) => ({ ...p, delivery_fee: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             />
+          </div>
+
+          {/* Mini Map for coordinates */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Ubicación del restaurante
+            </label>
+            <p className="text-xs text-gray-500 mb-2">Haz clic en el mapa para marcar la ubicación de tu restaurante.</p>
+            {mapReady && (
+              <LocationPicker
+                latitude={profile.latitude}
+                longitude={profile.longitude}
+                onLocationChange={handleMapClick}
+              />
+            )}
+            {profile.latitude && profile.longitude && (
+              <p className="text-xs text-gray-500 mt-2">
+                📍 {Number(profile.latitude).toFixed(6)}, {Number(profile.longitude).toFixed(6)}
+              </p>
+            )}
           </div>
 
           {/* Messages */}
@@ -478,5 +571,99 @@ export default function SettingsForm() {
         )}
       </section>
     </div>
+  );
+}
+
+// --- Location Picker Component (Leaflet) ---
+
+function LocationPicker({
+  latitude,
+  longitude,
+  onLocationChange,
+}: {
+  latitude: number | null;
+  longitude: number | null;
+  onLocationChange: (lat: number, lng: number) => void;
+}) {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markerRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!mapRef.current || mapInstanceRef.current) return;
+
+    // Dynamic import to avoid SSR issues with Leaflet
+    import("leaflet").then((L) => {
+      // Fix default marker icon issue with bundlers
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+        iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+      });
+
+      const initialLat = latitude ?? DEFAULT_LAT;
+      const initialLng = longitude ?? DEFAULT_LNG;
+      const initialZoom = latitude ? 15 : 6;
+
+      const map = L.map(mapRef.current!, { scrollWheelZoom: true }).setView(
+        [initialLat, initialLng],
+        initialZoom
+      );
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19,
+      }).addTo(map);
+
+      // Add marker if coordinates exist
+      if (latitude && longitude) {
+        markerRef.current = L.marker([latitude, longitude]).addTo(map);
+      }
+
+      // Click handler
+      map.on("click", (e: any) => {
+        const { lat, lng } = e.latlng;
+        onLocationChange(parseFloat(lat.toFixed(6)), parseFloat(lng.toFixed(6)));
+
+        if (markerRef.current) {
+          markerRef.current.setLatLng([lat, lng]);
+        } else {
+          markerRef.current = L.marker([lat, lng]).addTo(map);
+        }
+      });
+
+      mapInstanceRef.current = map;
+    });
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markerRef.current = null;
+      }
+    };
+  }, []);
+
+  // Update marker when coordinates change externally
+  useEffect(() => {
+    if (!mapInstanceRef.current || !latitude || !longitude) return;
+
+    if (markerRef.current) {
+      markerRef.current.setLatLng([latitude, longitude]);
+    }
+  }, [latitude, longitude]);
+
+  return (
+    <>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+      />
+      <div
+        ref={mapRef}
+        className="w-full h-64 rounded-lg border border-gray-300 z-0"
+      />
+    </>
   );
 }

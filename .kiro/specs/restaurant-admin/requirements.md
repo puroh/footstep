@@ -33,11 +33,12 @@ The restaurant-admin module provides restaurant owners with tools to configure t
 #### Acceptance Criteria
 
 1. THE system SHALL identify each restaurant by a unique and immutable slug.
-2. THE management panel SHALL allow editing: name, logo, address, Payment Methods, notification channel, and delivery fee.
-3. IF other user without restaurant role THEN THE system not SHALL allow modify the data.
-4. THE management panel SHALL allow the owner to set the restaurant's geographic coordinates by selecting a location on a mini map.
-5. WHEN the owner selects a location on the mini map, THE system SHALL store the latitude and longitude and display the selected point on the map.
-6. THE system SHALL display the restaurant's location on a mini map in the client-facing views when coordinates are configured (e.g. pickup/dine-in delivery type selection).
+2. THE management panel SHALL display the restaurant's slug as a read-only field in the settings page, so the owner can copy and share the public URL.
+3. THE management panel SHALL allow editing: name, logo, address, phone number, payment methods, notification channel, and delivery fee.
+4. IF a user without restaurant owner role attempts to modify the data, THEN THE system SHALL reject the request.
+5. THE management panel SHALL allow the owner to set the restaurant's geographic coordinates by selecting a location on a mini map.
+6. WHEN the owner selects a location on the mini map, THE system SHALL store the latitude and longitude and display the selected point on the map.
+7. THE system SHALL display the restaurant's location on a mini map in the client-facing views when coordinates are configured (e.g. pickup/dine-in delivery type selection).
 
 ### Requirement 2: Menu Management
 

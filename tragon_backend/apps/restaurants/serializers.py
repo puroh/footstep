@@ -83,6 +83,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
             "telegram_chat_id",
+            "phone_number",
             "is_active",
             "created_at",
         ]

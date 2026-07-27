@@ -171,13 +171,18 @@ export default function MenuManager() {
             {categories.map((cat) => (
               <li
                 key={cat.id}
-                className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer text-sm ${
-                  selectedCategory?.id === cat.id ? "bg-orange-50 text-orange-700 font-medium" : "text-gray-700 hover:bg-gray-50"
-                }`}
+                className="flex items-center justify-between gap-2 py-1"
               >
-                <span onClick={() => selectCategory(cat)} className="flex-1 truncate">
+                <button
+                  onClick={() => selectCategory(cat)}
+                  className={`flex-1 text-left truncate px-2 py-1 rounded ${
+                    selectedCategory?.id === cat.id
+                      ? "bg-orange-600 text-white font-medium"
+                      : "bg-gray-100 hover:bg-orange-100 text-gray-700"
+                  }`}
+                >
                   {cat.name}
-                </span>
+                </button>
                 <span className="flex gap-1 ml-2">
                   <button
                     onClick={() => { setEditingCategory(cat); setCategoryName(cat.name); setShowCategoryForm(true); }}
@@ -417,12 +422,16 @@ function ProductForm({
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-600 mb-1">Foto</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
-            className="text-sm text-gray-600"
-          />
+          <label className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white text-sm rounded-md cursor-pointer hover:bg-orange-700 transition-colors">
+            <span>📷 Seleccionar imagen</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+              className="hidden"
+            />
+          </label>
+          {photo && <span className="ml-2 text-xs text-gray-600">{photo.name}</span>}
         </div>
         {error && <p className="text-xs text-red-600">{error}</p>}
         <div className="flex gap-2">

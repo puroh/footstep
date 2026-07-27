@@ -27,6 +27,7 @@ class Order(models.Model):
     )
     delivery_type = models.CharField(max_length=30, choices=DeliveryType.choices)
     address_line = models.TextField(blank=True, default="")
+    customer_phone = models.CharField(max_length=50, blank=True, default="")
     latitude = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True
     )
