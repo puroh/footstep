@@ -102,7 +102,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - **Validates: Requirements 2.4, 2.6, 3.4, 3.6**
 
 - [ ] 6. Frontend: Checkout flow (delivery, address, payment, confirmation)
-  - [ ] 6.1 Create `DeliveryTypeStep` component
+  - [x] 6.1 Create `DeliveryTypeStep` component
     - Radio options: delivery, pickup, dine-in
     - Show `AddressForm` when delivery selected
     - Show restaurant address for pickup/dine-in
