@@ -1,0 +1,167 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Extend `DeliveryType` choices on the Order model to include `dine_in`, generate and apply migration": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121704913
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121718457
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121786276
+      }
+    ],
+    "1.2 Create `PublicOrderCreateSerializer` in `apps/orders/serializers.py`": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705190
+      }
+    ],
+    "1.3 Create `create_public_order` view with `OrderCreateThrottle` in `apps/orders/views.py`": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705428
+      }
+    ],
+    "1.4 Register the public order endpoint in URL configuration": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705595
+      }
+    ],
+    "1.5 Add throttle rate and `TELEGRAM_BOT_TOKEN` to Django settings": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705862
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121719213
+      }
+    ],
+    "2.1 Create `apps/notifications/` Django app with `services.py`": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706071
+      }
+    ],
+    "2.2 Wire Telegram notification into `create_public_order` view": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706276
+      }
+    ],
+    "3. Checkpoint — Backend verification": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706473
+      }
+    ],
+    "4.1 Create `src/pages/[slug]/index.astro` with SSR data fetching": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706654
+      }
+    ],
+    "4.2 Create `MenuPage` React component with category sections and product cards": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706790
+      }
+    ],
+    "4.3 Create `ProductDetail` modal component": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707005
+      }
+    ],
+    "5.1 Create `src/stores/cart.ts` with nanostores atoms and computed values": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707144
+      }
+    ],
+    "5.2 Create `OrderBar` component (fixed bottom bar)": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707298
+      }
+    ],
+    "6.1 Create `DeliveryTypeStep` component": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707512
+      }
+    ],
+    "6.2 Create `AddressForm` component with Colombian address fields": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707723
+      }
+    ],
+    "6.3 Create `PaymentMethodStep` component": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707948
+      }
+    ],
+    "6.4 Create `src/lib/pricing.ts` with `computeOrderTotal` function": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708116
+      }
+    ],
+    "6.5 Create `ConfirmationScreen` component and order submission logic": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708266
+      }
+    ],
+    "7. Checkpoint — Frontend verification": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708461
+      }
+    ],
+    "8.1 Wire `MenuPage` to use `ProductDetail`, `OrderBar`, and checkout flow as a unified experience": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708757
+      }
+    ],
+    "9. Final checkpoint — Ensure all tests pass": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121709065
+      }
+    ]
+  }
+}

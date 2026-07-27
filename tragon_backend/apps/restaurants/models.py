@@ -1,8 +1,9 @@
+import secrets
+import string
 import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.text import slugify
 
 
 class Owner(AbstractUser):
@@ -35,7 +36,7 @@ class Restaurant(models.Model):
         null=True,
         blank=True,
     )
-    slug = models.SlugField(max_length=50, unique=True, editable=False)
+    slug = models.SlugField(max_length=32, unique=True, editable=False)
     name = models.CharField(max_length=200)
     logo_url = models.TextField(blank=True, default="")
     address_line = models.TextField()
@@ -58,15 +59,24 @@ class Restaurant(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.name)[:50]
-            slug = base_slug
-            counter = 1
-            while Restaurant.objects.filter(slug=slug).exists():
-                suffix = f"-{counter}"
-                slug = base_slug[: 50 - len(suffix)] + suffix
-                counter += 1
-            self.slug = slug
+            self.slug = self._generate_unique_slug()
         super().save(*args, **kwargs)
+
+    @staticmethod
+    def _generate_unique_slug(length=8, max_attempts=10):
+        """
+        Generate a random alphanumeric slug.
+
+        Uses secrets.choice for cryptographic randomness.
+        8 chars alphanumeric = 36^8 = ~2.8 trillion combinations.
+        Retries on collision (extremely unlikely).
+        """
+        alphabet = string.ascii_lowercase + string.digits
+        for _ in range(max_attempts):
+            slug = "".join(secrets.choice(alphabet) for _ in range(length))
+            if not Restaurant.objects.filter(slug=slug).exists():
+                return slug
+        raise RuntimeError("Could not generate unique slug after max attempts")
 
 
 class PaymentMethod(models.Model):
