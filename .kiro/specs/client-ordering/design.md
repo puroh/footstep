@@ -50,7 +50,7 @@ Client browser
        └─ Return 201 { order_id, reference_number }
 ```
 
-## Components
+## Components and Interfaces
 
 ### Backend: Public Order Creation Endpoint
 
@@ -345,7 +345,7 @@ REST_FRAMEWORK = {
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN", default="")
 ```
 
-## Frontend Components
+### Frontend Components
 
 ### Page: `/[slug]/index.astro`
 
@@ -581,7 +581,7 @@ export function computeOrderTotal(
 }
 ```
 
-## API Interfaces
+### API Interfaces
 
 ### New Endpoint
 
@@ -726,6 +726,26 @@ No new models are introduced.
 - **Validation highlights**: Missing required fields are highlighted with error messages
 - **Network error**: Toast notification with retry suggestion
 - **Order failure**: Error modal with option to retry submission
+
+## Testing Strategy
+
+### Backend
+
+- **Unit tests**: Validate serializer logic (validation, total calculation, product ownership enforcement) using pytest-django with factory_boy for test data.
+- **Property tests**: Use Hypothesis to generate random valid/invalid order payloads and verify correctness properties (round-trip persistence, ownership validation, pagination structure).
+- **Integration tests**: Test the full POST endpoint lifecycle (request → validation → persistence → Telegram call) with mocked Telegram API.
+- **Throttle tests**: Verify rate limiting returns 429 after threshold.
+
+### Frontend
+
+- **Unit tests**: Validate cart store logic (add, remove, clear, total computation) and address validation using Vitest.
+- **Property tests**: Use fast-check to generate arbitrary cart states and verify total computation and clear behavior.
+- **Component tests**: Verify component rendering and interaction (product detail modal, checkout flow) using Testing Library.
+
+### Coverage Targets
+
+- Backend: minimum 80% line coverage on serializers and services.
+- Frontend: minimum 80% line coverage on stores and validation logic.
 
 ## Correctness Properties
 
