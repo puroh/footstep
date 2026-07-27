@@ -285,6 +285,11 @@
         "executionId": "d104beac-0938-421a-993f-09da995009c1",
         "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
         "timestamp": 1785121708266
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124014100
       }
     ],
     "7. Checkpoint — Frontend verification": [
@@ -334,6 +339,13 @@
         "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
         "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
         "timestamp": 1785124005495
+      }
+    ],
+    "6. Frontend: Checkout flow (delivery, address, payment, confirmation)": [
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124014433
       }
     ]
   }

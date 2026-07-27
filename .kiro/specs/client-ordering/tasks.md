@@ -101,7 +101,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - **Property 6: Cart clear resets to empty state**
     - **Validates: Requirements 2.4, 2.6, 3.4, 3.6**
 
-- [ ] 6. Frontend: Checkout flow (delivery, address, payment, confirmation)
+- [x] 6. Frontend: Checkout flow (delivery, address, payment, confirmation)
   - [x] 6.1 Create `DeliveryTypeStep` component
     - Radio options: delivery, pickup, dine-in
     - Show `AddressForm` when delivery selected
@@ -127,7 +127,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Return `{ subtotal, delivery_fee, total }`
     - _Requirements: 5.2_
 
-  - [ ] 6.5 Create `ConfirmationScreen` component and order submission logic
+  - [x] 6.5 Create `ConfirmationScreen` component and order submission logic
     - Submit POST to `/api/v1/orders/` with full payload
     - Display order reference number, item summary, delivery info, payment, total on success
     - Handle network errors with toast and retry option
