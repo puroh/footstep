@@ -166,7 +166,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Test invalid slug returns 404
     - _Requirements: 7.3_
 
-- [ ] 9. Final checkpoint — Ensure all tests pass
+- [x] 9. Final checkpoint — Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
