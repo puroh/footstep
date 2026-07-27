@@ -8,7 +8,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
 
 ## Tasks
 
-- [ ] 1. Backend: Add `dine_in` delivery type and public order endpoint
+- [x] 1. Backend: Add `dine_in` delivery type and public order endpoint
   - [x] 1.1 Extend `DeliveryType` choices on the Order model to include `dine_in`, generate and apply migration
     - Add `DINE_IN = "dine_in"` to `Order.DeliveryType` in `apps/orders/models.py`
     - Run `python manage.py makemigrations orders` and apply
@@ -28,7 +28,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Return 201 with `order_id` and `reference_number`
     - _Requirements: 7.2, 7.3_
 
-  - [-] 1.4 Register the public order endpoint in URL configuration
+  - [x] 1.4 Register the public order endpoint in URL configuration
     - Add `path("", create_public_order, name="create-public-order")` to `apps/orders/urls.py`
     - Ensure it maps to `POST /api/v1/orders/`
     - _Requirements: 7.2_

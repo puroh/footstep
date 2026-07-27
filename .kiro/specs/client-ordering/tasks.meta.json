@@ -62,6 +62,11 @@
         "executionId": "d104beac-0938-421a-993f-09da995009c1",
         "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
         "timestamp": 1785123203100
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123308423
       }
     ],
     "1.5 Add throttle rate and `TELEGRAM_BOT_TOKEN` to Django settings": [
@@ -206,6 +211,13 @@
         "executionId": "d104beac-0938-421a-993f-09da995009c1",
         "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
         "timestamp": 1785121709065
+      }
+    ],
+    "1. Backend: Add `dine_in` delivery type and public order endpoint": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123308666
       }
     ]
   }
