@@ -82,14 +82,14 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - "Cancel" button discards and closes modal
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
-- [ ] 5. Frontend: Cart store with nanostores
+- [x] 5. Frontend: Cart store with nanostores
   - [x] 5.1 Create `src/stores/cart.ts` with nanostores atoms and computed values
     - Define `CartItem` and `CartItemTopping` interfaces
     - Implement `$cartItems` atom, `$cartItemCount` computed, `$cartSubtotal` computed
     - Implement `addToCart`, `removeFromCart`, `clearCart` functions
     - _Requirements: 2.4, 2.5, 2.6, 3.4, 3.6_
 
-  - [ ] 5.2 Create `OrderBar` component (fixed bottom bar)
+  - [x] 5.2 Create `OrderBar` component (fixed bottom bar)
     - Show total item count badge from `$cartItemCount`
     - "Cancel order" button calls `clearCart()`
     - "Pay" button opens checkout flow
