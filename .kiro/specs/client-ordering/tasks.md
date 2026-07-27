@@ -140,7 +140,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - **Property 5: Cart total equals sum of item costs (pricing module)**
     - **Validates: Requirements 2.4, 5.2**
 
-- [ ] 7. Checkpoint — Frontend verification
+- [x] 7. Checkpoint — Frontend verification
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 8. Integration and wiring
