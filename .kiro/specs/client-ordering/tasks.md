@@ -70,13 +70,13 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Apply white-label CSS variables (primary_color, secondary_color)
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-  - [~] 4.2 Create `MenuPage` React component with category sections and product cards
+  - [x] 4.2 Create `MenuPage` React component with category sections and product cards
     - Render restaurant header with logo and display_name
     - Render `CategorySection` for each category (heading + product grid)
     - Render `ProductCard` components (photo + name, tap to open detail)
     - _Requirements: 2.1, 2.2, 2.3_
 
-  - [~] 4.3 Create `ProductDetail` modal component
+  - [ ] 4.3 Create `ProductDetail` modal component
     - Display photo, name, ingredients, toppings with checkboxes and prices, special instructions textarea
     - "Accept" button adds item to cart and closes modal
     - "Cancel" button discards and closes modal
@@ -89,7 +89,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Implement `addToCart`, `removeFromCart`, `clearCart` functions
     - _Requirements: 2.4, 2.5, 2.6, 3.4, 3.6_
 
-  - [~] 5.2 Create `OrderBar` component (fixed bottom bar)
+  - [ ] 5.2 Create `OrderBar` component (fixed bottom bar)
     - Show total item count badge from `$cartItemCount`
     - "Cancel order" button calls `clearCart()`
     - "Pay" button opens checkout flow
@@ -102,19 +102,19 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - **Validates: Requirements 2.4, 2.6, 3.4, 3.6**
 
 - [ ] 6. Frontend: Checkout flow (delivery, address, payment, confirmation)
-  - [~] 6.1 Create `DeliveryTypeStep` component
+  - [ ] 6.1 Create `DeliveryTypeStep` component
     - Radio options: delivery, pickup, dine-in
     - Show `AddressForm` when delivery selected
     - Show restaurant address for pickup/dine-in
     - _Requirements: 4.1, 4.2, 4.4_
 
-  - [~] 6.2 Create `AddressForm` component with Colombian address fields
+  - [ ] 6.2 Create `AddressForm` component with Colombian address fields
     - Fields: street_type (select: Calle, Carrera, Avenida, Transversal, Diagonal), road_number, cross_number, building_number, neighborhood, city, address_details (optional)
     - Implement `validateAddress()` in `src/lib/validation.ts`
     - Block advancement and highlight missing fields when incomplete
     - _Requirements: 4.2, 4.3, 4.5_
 
-  - [~] 6.3 Create `PaymentMethodStep` component
+  - [ ] 6.3 Create `PaymentMethodStep` component
     - Radio options: cash, transfer
     - Cash: show subtotal, delivery fee, total, bill_denomination input (required)
     - Transfer: show Bre-b key, amounts, instructions, copy-to-clipboard button
@@ -127,7 +127,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Return `{ subtotal, delivery_fee, total }`
     - _Requirements: 5.2_
 
-  - [~] 6.5 Create `ConfirmationScreen` component and order submission logic
+  - [ ] 6.5 Create `ConfirmationScreen` component and order submission logic
     - Submit POST to `/api/v1/orders/` with full payload
     - Display order reference number, item summary, delivery info, payment, total on success
     - Handle network errors with toast and retry option
@@ -140,11 +140,11 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - **Property 5: Cart total equals sum of item costs (pricing module)**
     - **Validates: Requirements 2.4, 5.2**
 
-- [~] 7. Checkpoint — Frontend verification
+- [ ] 7. Checkpoint — Frontend verification
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 8. Integration and wiring
-  - [~] 8.1 Wire `MenuPage` to use `ProductDetail`, `OrderBar`, and checkout flow as a unified experience
+  - [ ] 8.1 Wire `MenuPage` to use `ProductDetail`, `OrderBar`, and checkout flow as a unified experience
     - Connect product tap → ProductDetail modal → addToCart → OrderBar update
     - Connect Pay button → DeliveryTypeStep → AddressForm → PaymentMethodStep → submit → ConfirmationScreen
     - _Requirements: 2.3, 2.5, 3.4, 4.1, 5.1, 6.5_
@@ -166,7 +166,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Test invalid slug returns 404
     - _Requirements: 7.3_
 
-- [~] 9. Final checkpoint — Ensure all tests pass
+- [ ] 9. Final checkpoint — Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
