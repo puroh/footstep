@@ -83,7 +83,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
 - [ ] 5. Frontend: Cart store with nanostores
-  - [-] 5.1 Create `src/stores/cart.ts` with nanostores atoms and computed values
+  - [x] 5.1 Create `src/stores/cart.ts` with nanostores atoms and computed values
     - Define `CartItem` and `CartItemTopping` interfaces
     - Implement `$cartItems` atom, `$cartItemCount` computed, `$cartSubtotal` computed
     - Implement `addToCart`, `removeFromCart`, `clearCart` functions
