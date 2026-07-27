@@ -108,7 +108,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Show restaurant address for pickup/dine-in
     - _Requirements: 4.1, 4.2, 4.4_
 
-  - [ ] 6.2 Create `AddressForm` component with Colombian address fields
+  - [x] 6.2 Create `AddressForm` component with Colombian address fields
     - Fields: street_type (select: Calle, Carrera, Avenida, Transversal, Diagonal), road_number, cross_number, building_number, neighborhood, city, address_details (optional)
     - Implement `validateAddress()` in `src/lib/validation.ts`
     - Block advancement and highlight missing fields when incomplete
