@@ -42,14 +42,14 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Test valid order creation, invalid slug, products not in restaurant, unavailable products, toppings not on product, missing address for delivery, missing bill_denomination for cash
     - _Requirements: 7.5, 7.6_
 
-- [ ] 2. Backend: Telegram notification service
+- [x] 2. Backend: Telegram notification service
   - [x] 2.1 Create `apps/notifications/` Django app with `services.py`
     - Implement `format_order_message(order)` — builds Markdown-formatted message with items, toppings, delivery type, address, payment, total
     - Implement `send_order_telegram_notification(order)` — fire-and-forget using `python-telegram-bot==22.2`, logs errors without raising
     - Add `python-telegram-bot==22.2` to requirements
     - _Requirements: 6.2, 6.3, 6.4_
 
-  - [-] 2.2 Wire Telegram notification into `create_public_order` view
+  - [x] 2.2 Wire Telegram notification into `create_public_order` view
     - Call `send_order_telegram_notification(order)` after successful serializer save
     - _Requirements: 6.2_
 
