@@ -14,7 +14,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Run `python manage.py makemigrations orders` and apply
     - _Requirements: 4.1, 7.2_
 
-  - [-] 1.2 Create `PublicOrderCreateSerializer` in `apps/orders/serializers.py`
+  - [x] 1.2 Create `PublicOrderCreateSerializer` in `apps/orders/serializers.py`
     - Implement nested serializers: `OrderItemToppingCreateSerializer`, `OrderItemCreateSerializer`, `PublicOrderCreateSerializer`
     - Validate restaurant slug, product ownership, topping ownership, address fields for delivery, bill_denomination for cash
     - Compute total (base_price + toppings) * quantity + delivery fee
