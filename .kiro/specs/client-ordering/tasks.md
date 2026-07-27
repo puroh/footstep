@@ -143,8 +143,8 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
 - [ ] 7. Checkpoint — Frontend verification
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 8. Integration and wiring
-  - [ ] 8.1 Wire `MenuPage` to use `ProductDetail`, `OrderBar`, and checkout flow as a unified experience
+- [x] 8. Integration and wiring
+  - [x] 8.1 Wire `MenuPage` to use `ProductDetail`, `OrderBar`, and checkout flow as a unified experience
     - Connect product tap → ProductDetail modal → addToCart → OrderBar update
     - Connect Pay button → DeliveryTypeStep → AddressForm → PaymentMethodStep → submit → ConfirmationScreen
     - _Requirements: 2.3, 2.5, 3.4, 4.1, 5.1, 6.5_
