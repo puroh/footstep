@@ -121,7 +121,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Block confirmation if cash selected without bill_denomination
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-  - [-] 6.4 Create `src/lib/pricing.ts` with `computeOrderTotal` function
+  - [x] 6.4 Create `src/lib/pricing.ts` with `computeOrderTotal` function
     - Compute subtotal from cart items (base_price + toppings) * quantity
     - Add delivery fee only when delivery_type is "delivery"
     - Return `{ subtotal, delivery_fee, total }`
