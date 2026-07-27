@@ -63,7 +63,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 4. Frontend: Astro SSR page and menu display
-  - [~] 4.1 Create `src/pages/[slug]/index.astro` with SSR data fetching
+  - [x] 4.1 Create `src/pages/[slug]/index.astro` with SSR data fetching
     - Fetch restaurant data from `/api/v1/restaurants/{slug}/public/`
     - Fetch menu from `/api/v1/catalog/{slug}/menu/`
     - Redirect to 404 if restaurant not found
@@ -83,7 +83,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
 - [ ] 5. Frontend: Cart store with nanostores
-  - [~] 5.1 Create `src/stores/cart.ts` with nanostores atoms and computed values
+  - [-] 5.1 Create `src/stores/cart.ts` with nanostores atoms and computed values
     - Define `CartItem` and `CartItemTopping` interfaces
     - Implement `$cartItems` atom, `$cartItemCount` computed, `$cartSubtotal` computed
     - Implement `addToCart`, `removeFromCart`, `clearCart` functions
@@ -121,7 +121,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Block confirmation if cash selected without bill_denomination
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-  - [~] 6.4 Create `src/lib/pricing.ts` with `computeOrderTotal` function
+  - [-] 6.4 Create `src/lib/pricing.ts` with `computeOrderTotal` function
     - Compute subtotal from cart items (base_price + toppings) * quantity
     - Add delivery fee only when delivery_type is "delivery"
     - Return `{ subtotal, delivery_fee, total }`
