@@ -33,7 +33,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Ensure it maps to `POST /api/v1/orders/`
     - _Requirements: 7.2_
 
-  - [-] 1.5 Add throttle rate and `TELEGRAM_BOT_TOKEN` to Django settings
+  - [x] 1.5 Add throttle rate and `TELEGRAM_BOT_TOKEN` to Django settings
     - Add `"anon": "10/minute"` to `DEFAULT_THROTTLE_RATES` in `config/settings/base.py`
     - Add `TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN", default="")`
     - _Requirements: 7.3_
