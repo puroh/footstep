@@ -59,7 +59,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Test error logging on TelegramError
     - _Requirements: 6.3, 6.4_
 
-- [~] 3. Checkpoint — Backend verification
+- [x] 3. Checkpoint — Backend verification
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 4. Frontend: Astro SSR page and menu display
