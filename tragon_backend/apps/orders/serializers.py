@@ -104,7 +104,7 @@ class PublicOrderCreateSerializer(serializers.Serializer):
     delivery_type = serializers.ChoiceField(choices=["delivery", "pickup", "dine_in"])
     payment_method_id = serializers.UUIDField()
     customer_name = serializers.CharField(max_length=200, required=False, default="")
-    customer_phone = serializers.CharField(max_length=50, required=False, default="")
+    customer_phone = serializers.CharField(max_length=50)
     cash_denomination = serializers.IntegerField(required=False, allow_null=True)
     address_line = serializers.CharField(required=False, allow_blank=True, default="")
     telegram_chat_id = serializers.CharField(
@@ -135,6 +135,12 @@ class PublicOrderCreateSerializer(serializers.Serializer):
                 {"payment_method_id": "Payment method not found or inactive."}
             )
         attrs["payment_method_obj"] = payment_method
+
+        # --- Phone required ---
+        if not attrs.get("customer_phone", "").strip():
+            raise serializers.ValidationError(
+                {"customer_phone": "Phone number is required."}
+            )
 
         # --- Address required for delivery ---
         if attrs["delivery_type"] == "delivery" and not attrs.get("address_line"):
@@ -225,6 +231,7 @@ class PublicOrderCreateSerializer(serializers.Serializer):
             reference_number=secrets.token_hex(5).upper(),
             delivery_type=validated_data["delivery_type"],
             address_line=validated_data.get("address_line", ""),
+            customer_phone=validated_data.get("customer_phone", ""),
             payment_method=payment_method,
             cash_denomination=validated_data.get("cash_denomination"),
             subtotal=subtotal,

@@ -47,6 +47,7 @@ class Restaurant(models.Model):
         max_digits=9, decimal_places=6, null=True, blank=True
     )
     telegram_chat_id = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=50, blank=True, default="")
     delivery_fee = models.IntegerField()
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

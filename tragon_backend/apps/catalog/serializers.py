@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from apps.restaurants.models import Restaurant
+from apps.restaurants.models import PaymentMethod, Restaurant
 
 from .models import Category, Product, Topping
 
@@ -127,9 +127,30 @@ class PublicCategorySerializer(serializers.ModelSerializer):
         return PublicProductSerializer(active_products, many=True).data
 
 
+class PublicPaymentMethodSerializer(serializers.ModelSerializer):
+    """Payment method info for public menu (active only)."""
+
+    class Meta:
+        model = PaymentMethod
+        fields = ["id", "type", "key_value", "is_active"]
+
+
 class PublicRestaurantSerializer(serializers.ModelSerializer):
-    """Basic restaurant info for the public menu."""
+    """Basic restaurant info for the public menu, including payment methods."""
+
+    payment_methods = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
-        fields = ["name", "slug", "logo_url", "address_line", "delivery_fee"]
+        fields = [
+            "name",
+            "slug",
+            "logo_url",
+            "address_line",
+            "delivery_fee",
+            "payment_methods",
+        ]
+
+    def get_payment_methods(self, obj):
+        active_methods = obj.payment_methods.filter(is_active=True)
+        return PublicPaymentMethodSerializer(active_methods, many=True).data

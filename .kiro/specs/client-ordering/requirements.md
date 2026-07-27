@@ -61,10 +61,11 @@ Depends on: restaurant-admin module (restaurant with products and payment method
 #### Acceptance Criteria
 
 1. WHEN the client presses "Pay", THE system SHALL show delivery type options: delivery, pickup, and dine-in.
-2. WHEN the client selects "delivery", THE system SHALL show an address form adapted for Colombian address format.
-3. THE address form SHALL include fields: street type, road number, cross number, building number, neighborhood, city, and additional details.
+2. WHEN the client selects "delivery", THE system SHALL show an address form with four fields: phone number, address, neighborhood, and city.
+3. THE system SHALL display a mini map where the client can tap to mark the delivery location, storing the coordinates along with the address fields.
 4. WHEN the client selects "pickup" or "dine-in", THE system SHALL show the restaurant address and a mini map with its location.
-5. IF the client selects "delivery" and does not complete mandatory address fields, THEN THE system SHALL block advancement and highlight the missing fields.
+5. IF the client selects "delivery" and does not complete all four mandatory fields (phone number, address, neighborhood, city), THEN THE system SHALL block advancement and highlight the missing fields.
+6. THE system SHALL ask the client for a phone number as a mandatory contact field regardless of delivery type, so the restaurant can reach the client if needed.
 
 ### Requirement 5: Payment Method Selection
 
