@@ -22,13 +22,13 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Generate reference_number with `secrets.token_hex(5).upper()`
     - _Requirements: 6.1, 7.2, 7.5, 7.6_
 
-  - [~] 1.3 Create `create_public_order` view with `OrderCreateThrottle` in `apps/orders/views.py`
+  - [x] 1.3 Create `create_public_order` view with `OrderCreateThrottle` in `apps/orders/views.py`
     - Function-based view with `@api_view(["POST"])`, `@permission_classes([AllowAny])`, `@throttle_classes([OrderCreateThrottle])`
     - `OrderCreateThrottle` extends `AnonRateThrottle` with `rate = "10/minute"`
     - Return 201 with `order_id` and `reference_number`
     - _Requirements: 7.2, 7.3_
 
-  - [~] 1.4 Register the public order endpoint in URL configuration
+  - [-] 1.4 Register the public order endpoint in URL configuration
     - Add `path("", create_public_order, name="create-public-order")` to `apps/orders/urls.py`
     - Ensure it maps to `POST /api/v1/orders/`
     - _Requirements: 7.2_
@@ -49,7 +49,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Add `python-telegram-bot==22.2` to requirements
     - _Requirements: 6.2, 6.3, 6.4_
 
-  - [~] 2.2 Wire Telegram notification into `create_public_order` view
+  - [-] 2.2 Wire Telegram notification into `create_public_order` view
     - Call `send_order_telegram_notification(order)` after successful serializer save
     - _Requirements: 6.2_
 
