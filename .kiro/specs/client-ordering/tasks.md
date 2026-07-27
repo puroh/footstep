@@ -114,7 +114,7 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
     - Block advancement and highlight missing fields when incomplete
     - _Requirements: 4.2, 4.3, 4.5_
 
-  - [ ] 6.3 Create `PaymentMethodStep` component
+  - [x] 6.3 Create `PaymentMethodStep` component
     - Radio options: cash, transfer
     - Cash: show subtotal, delivery fee, total, bill_denomination input (required)
     - Transfer: show Bre-b key, amounts, instructions, copy-to-clipboard button
