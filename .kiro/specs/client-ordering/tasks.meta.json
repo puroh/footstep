@@ -1,0 +1,374 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Extend `DeliveryType` choices on the Order model to include `dine_in`, generate and apply migration": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121704913
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121718457
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121786276
+      }
+    ],
+    "1.2 Create `PublicOrderCreateSerializer` in `apps/orders/serializers.py`": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705190
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121791868
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123195705
+      }
+    ],
+    "1.3 Create `create_public_order` view with `OrderCreateThrottle` in `apps/orders/views.py`": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705428
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123202523
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123307861
+      }
+    ],
+    "1.4 Register the public order endpoint in URL configuration": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705595
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123203100
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123308423
+      }
+    ],
+    "1.5 Add throttle rate and `TELEGRAM_BOT_TOKEN` to Django settings": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121705862
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121719213
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121786874
+      }
+    ],
+    "2.1 Create `apps/notifications/` Django app with `services.py`": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706071
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121793664
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785122822623
+      }
+    ],
+    "2.2 Wire Telegram notification into `create_public_order` view": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706276
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123203721
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123309430
+      }
+    ],
+    "3. Checkpoint — Backend verification": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706473
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123326039
+      }
+    ],
+    "4.1 Create `src/pages/[slug]/index.astro` with SSR data fetching": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706654
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123336772
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123395792
+      }
+    ],
+    "4.2 Create `MenuPage` React component with category sections and product cards": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121706790
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123403760
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124003585
+      }
+    ],
+    "4.3 Create `ProductDetail` modal component": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707005
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123404407
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124004245
+      }
+    ],
+    "5.1 Create `src/stores/cart.ts` with nanostores atoms and computed values": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707144
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123337662
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123396593
+      }
+    ],
+    "5.2 Create `OrderBar` component (fixed bottom bar)": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707298
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123405442
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124005292
+      }
+    ],
+    "6.1 Create `DeliveryTypeStep` component": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707512
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123406161
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124005980
+      }
+    ],
+    "6.2 Create `AddressForm` component with Colombian address fields": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707723
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123407157
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124006949
+      }
+    ],
+    "6.3 Create `PaymentMethodStep` component": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121707948
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124012947
+      }
+    ],
+    "6.4 Create `src/lib/pricing.ts` with `computeOrderTotal` function": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708116
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123338299
+      },
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123397325
+      }
+    ],
+    "6.5 Create `ConfirmationScreen` component and order submission logic": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708266
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124014100
+      }
+    ],
+    "7. Checkpoint — Frontend verification": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708461
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124016429
+      }
+    ],
+    "8.1 Wire `MenuPage` to use `ProductDetail`, `OrderBar`, and checkout flow as a unified experience": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121708757
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124015469
+      }
+    ],
+    "9. Final checkpoint — Ensure all tests pass": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785121709065
+      },
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124017396
+      }
+    ],
+    "1. Backend: Add `dine_in` delivery type and public order endpoint": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123308666
+      }
+    ],
+    "2. Backend: Telegram notification service": [
+      {
+        "executionId": "d104beac-0938-421a-993f-09da995009c1",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785123309982
+      }
+    ],
+    "4. Frontend: Astro SSR page and menu display": [
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124004727
+      }
+    ],
+    "5. Frontend: Cart store with nanostores": [
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124005495
+      }
+    ],
+    "6. Frontend: Checkout flow (delivery, address, payment, confirmation)": [
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124014433
+      }
+    ],
+    "8. Integration and wiring": [
+      {
+        "executionId": "d3ba2293-864b-40b1-9d28-a7572652fce7",
+        "chatSessionId": "sess_de9065de-59fb-49aa-9259-a96946aad4ff",
+        "timestamp": 1785124015669
+      }
+    ]
+  }
+}

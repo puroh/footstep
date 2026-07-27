@@ -1,11 +1,20 @@
-"""Views for the orders app (read-only)."""
+"""Views for the orders app."""
 
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework.viewsets import GenericViewSet
 
+from apps.notifications.services import send_order_telegram_notification
 from apps.orders.models import Order
-from apps.orders.serializers import OrderDetailSerializer, OrderListSerializer
+from apps.orders.serializers import (
+    OrderDetailSerializer,
+    OrderListSerializer,
+    PublicOrderCreateSerializer,
+)
 from apps.restaurants.mixins import RestaurantScopedMixin
 from apps.restaurants.permissions import IsRestaurantOwner
 
@@ -32,9 +41,9 @@ class OrderViewSet(
             )
 
         # Apply filters for list action
-        status = self.request.query_params.get("status")
-        if status:
-            queryset = queryset.filter(status=status)
+        order_status = self.request.query_params.get("status")
+        if order_status:
+            queryset = queryset.filter(status=order_status)
 
         date_from = self.request.query_params.get("date_from")
         if date_from:
@@ -45,3 +54,33 @@ class OrderViewSet(
             queryset = queryset.filter(created_at__date__lte=date_to)
 
         return queryset
+
+
+# ---------------------------------------------------------------------------
+# Public order creation (unauthenticated)
+# ---------------------------------------------------------------------------
+
+
+class OrderCreateThrottle(AnonRateThrottle):
+    rate = "10/minute"
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+@throttle_classes([OrderCreateThrottle])
+def create_public_order(request):
+    """
+    Public endpoint for clients to submit orders without authentication.
+    Identifies the restaurant by slug in the request body.
+    """
+    serializer = PublicOrderCreateSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    order = serializer.save()
+
+    # Fire-and-forget Telegram notification
+    send_order_telegram_notification(order)
+
+    return Response(
+        {"order_id": str(order.id), "reference_number": order.reference_number},
+        status=status.HTTP_201_CREATED,
+    )
