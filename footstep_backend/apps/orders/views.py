@@ -14,6 +14,7 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.viewsets import GenericViewSet
 
 from apps.notifications.services import send_order_telegram_notification
+from apps.orders.broadcast import broadcast_new_order, broadcast_order_update
 from apps.orders.models import Order
 from apps.orders.serializers import (
     OrderDetailSerializer,
@@ -84,6 +85,9 @@ class OrderViewSet(
         )
         order.save(update_fields=["status", "updated_description", "updated_at"])
 
+        # Broadcast status change to kitchen panel
+        broadcast_order_update(order)
+
         return Response(
             {
                 "id": str(order.id),
@@ -117,6 +121,9 @@ def create_public_order(request):
 
     # Fire-and-forget Telegram notification
     send_order_telegram_notification(order)
+
+    # Broadcast new order to kitchen panel
+    broadcast_new_order(order)
 
     return Response(
         {"order_id": str(order.id), "reference_number": order.reference_number},

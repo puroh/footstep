@@ -5,7 +5,7 @@
  */
 const BACKEND_URL = import.meta.env.PUBLIC_API_BASE
   ? import.meta.env.PUBLIC_API_BASE.replace("/api/v1", "")
-  : "http://192.168.100.165:8000";
+  : "http://localhost:8000";
 
 export function mediaUrl(path: string | null | undefined): string {
   if (!path) return "";
