@@ -15,7 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
-!tragon_frontend/src/lib/
+!footstep_frontend/src/lib/
 lib64/
 parts/
 sdist/
@@ -222,3 +222,6 @@ __marimo__/
 node_modules/
 dist/
 .astro/
+
+# Media uploads (development)
+footstep_backend/media/

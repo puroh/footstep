@@ -2,30 +2,30 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: tragon
-      POSTGRES_USER: tragon
-      POSTGRES_PASSWORD: tragon
+      POSTGRES_DB: footstep
+      POSTGRES_USER: footstep
+      POSTGRES_PASSWORD: footstep
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tragon"]
+      test: ["CMD-SHELL", "pg_isready -U footstep"]
       interval: 5s
       timeout: 3s
       retries: 5
 
   backend:
     build:
-      context: ./tragon_backend
+      context: ./footstep_backend
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.development
-      POSTGRES_DB: tragon
-      POSTGRES_USER: tragon
-      POSTGRES_PASSWORD: tragon
+      POSTGRES_DB: footstep
+      POSTGRES_USER: footstep
+      POSTGRES_PASSWORD: footstep
       POSTGRES_HOST: postgres
       POSTGRES_PORT: "5432"
       DJANGO_SECRET_KEY: dev-secret-key-not-for-production
@@ -34,12 +34,12 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./tragon_backend:/app
+      - ./footstep_backend:/app
       - /app/.venv
 
   frontend:
     build:
-      context: ./tragon_frontend
+      context: ./footstep_frontend
       dockerfile: Dockerfile
     ports:
       - "4321:4321"
