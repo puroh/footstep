@@ -1,0 +1,284 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { KitchenPanel } from "@/components/kitchen/KitchenPanel";
+
+const { slug } = Astro.params;
+const API_BASE = import.meta.env.API_BASE_INTERNAL ?? "http://backend:8000/api/v1";
+const PUBLIC_API_BASE = import.meta.env.PUBLIC_API_BASE ?? "http://192.168.100.165:8000/api/v1";
+
+// Validate restaurant exists
+const restaurantRes = await fetch(`${API_BASE}/catalog/${slug}/menu/`);
+if (!restaurantRes.ok) {
+  return Astro.redirect("/404");
+}
+
+// Build WebSocket URL
+const wsBase = PUBLIC_API_BASE.replace("http://", "ws://").replace("https://", "wss://").replace("/api/v1", "");
+const wsUrl = `${wsBase}/ws/kitchen/${slug}/`;
+---
+
+<BaseLayout title={`Cocina — ${slug}`}>
+  <style>
+    .kitchen-page {
+      min-height: 100vh;
+      background: #1a1a2e;
+      color: #eee;
+      padding: 1rem;
+    }
+
+    .kitchen-page h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    /* Kitchen Panel Styles */
+    .kitchen-panel__disconnected {
+      background: #ef4444;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .kitchen-panel__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .kitchen-panel__empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #888;
+      padding: 3rem;
+      font-size: 1.1rem;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .filter-bar__section {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar__label {
+      font-size: 0.85rem;
+      color: #999;
+      font-weight: 500;
+    }
+
+    .filter-bar__btn {
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      color: #ccc;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-bar__btn:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .filter-bar__btn--active {
+      background: rgba(59, 130, 246, 0.3);
+      border-color: #3b82f6;
+      color: #fff;
+    }
+
+    /* Order Card */
+    .order-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .order-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-card__ref {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .order-card__status {
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .order-card__time {
+      font-size: 0.85rem;
+      color: #999;
+    }
+
+    .order-card__items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .order-card__items > li {
+      padding: 0.3rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .order-card__items > li:last-child {
+      border-bottom: none;
+    }
+
+    .order-card__toppings {
+      list-style: none;
+      padding-left: 1rem;
+      margin: 0.2rem 0;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .order-card__notes {
+      font-size: 0.8rem;
+      color: #f59e0b;
+      font-style: italic;
+      margin: 0.2rem 0 0;
+    }
+
+    .order-card__info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .order-card__info > span {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .order-card__address {
+      display: block;
+      width: 100%;
+      margin-top: 0.2rem;
+    }
+
+    .order-card__total {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .order-card__actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .order-card__btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ccc;
+    }
+
+    .order-card__btn:hover {
+      opacity: 0.8;
+    }
+
+    .order-card__btn--advance {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    .order-card__btn--cancel {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .order-card__confirm {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #f87171;
+    }
+  </style>
+
+  <div class="kitchen-page">
+    <h1>Panel de Cocina</h1>
+    <KitchenPanel
+      client:load
+      slug={slug!}
+      token=""
+      initialOrders={[]}
+      wsUrl={wsUrl}
+    />
+  </div>
+
+  <script>
+    // Client-side: fetch initial orders and dispatch to React
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = localStorage.getItem("footstep_access_token");
+      if (!token) {
+        window.location.href = "/admin/login";
+        return;
+      }
+
+      // Fetch initial orders
+      try {
+        const apiBase = (import.meta as any).env?.PUBLIC_API_BASE ?? "http://192.168.100.165:8000/api/v1";
+        const res = await fetch(`${apiBase}/orders/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.status === 401) {
+          window.location.href = "/admin/login";
+          return;
+        }
+
+        if (res.ok) {
+          const orders = await res.json();
+          window.dispatchEvent(
+            new CustomEvent("kitchen:init", {
+              detail: { orders: orders.results ?? orders, token },
+            })
+          );
+        }
+      } catch (e) {
+        console.error("Failed to fetch initial orders:", e);
+      }
+    });
+  </script>
+</BaseLayout>
