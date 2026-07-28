@@ -1,6 +1,6 @@
 import { $accessToken, refreshAccessToken, logout } from "@/stores/auth";
 
-const API_BASE = import.meta.env.PUBLIC_API_BASE ?? "http://localhost:8000/api/v1";
+const API_BASE = import.meta.env.PUBLIC_API_BASE ?? "http://192.168.100.165:8000/api/v1";
 
 type RequestOptions = Omit<RequestInit, "headers"> & {
   headers?: Record<string, string>;

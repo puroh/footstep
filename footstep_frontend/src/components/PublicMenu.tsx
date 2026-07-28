@@ -18,7 +18,7 @@ type Step = "menu" | "delivery" | "address" | "payment" | "confirmation";
 type DeliveryType = "delivery" | "pickup" | "dine_in";
 
 const API_BASE = typeof window !== "undefined"
-  ? (import.meta.env.PUBLIC_API_BASE ?? "http://localhost:8000/api/v1")
+  ? (import.meta.env.PUBLIC_API_BASE ?? "http://192.168.100.165:8000/api/v1")
   : "http://backend:8000/api/v1";
 
 export default function PublicMenu({ restaurant, menuData, slug }: Props) {

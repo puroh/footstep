@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootStep — Presentacion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .slide {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 4rem 8rem;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ff6b35, #f7c948);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #ff6b35;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: #f7c948;
+        }
+
+        p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #ccc;
+            max-width: 900px;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: #999;
+            margin-bottom: 2rem;
+        }
+
+        .highlight {
+            color: #ff6b35;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            text-align: left;
+            max-width: 800px;
+        }
+
+        ul li {
+            font-size: 1.3rem;
+            line-height: 2.2;
+            color: #ccc;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff6b35;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1000px;
+            text-align: left;
+        }
+
+        .grid-2 .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .grid-2 .card h3 {
+            margin-bottom: 0.8rem;
+        }
+
+        .grid-2 .card p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            max-width: 900px;
+            margin-top: 1.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 107, 53, 0.15);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-size: 1.1rem;
+            color: #ff6b35;
+        }
+
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flow-step {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: #ff6b35;
+        }
+
+        .diagram {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: #aaa;
+            text-align: left;
+            line-height: 1.8;
+            white-space: pre;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.8rem;
+            z-index: 100;
+        }
+
+        .nav button {
+            background: rgba(255, 107, 53, 0.2);
+            border: 1px solid rgba(255, 107, 53, 0.4);
+            border-radius: 8px;
+            color: #ff6b35;
+            padding: 0.7rem 1.2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav button:hover {
+            background: rgba(255, 107, 53, 0.4);
+        }
+
+        .counter {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .big-number {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #ff6b35;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 4rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .big-number {
+            font-size: 3rem;
+        }
+
+        .stat-item p {
+            font-size: 1rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Portada -->
+<div class="slide active">
+    <h1>FootStep</h1>
+    <p class="subtitle">Automatiza los pedidos de tu restaurante</p>
+    <p>Sin apps. Sin comisiones. Sin una persona pegada al telefono.</p>
+</div>
+
+<!-- Slide 2: El Problema -->
+<div class="slide">
+    <h2>El Problema</h2>
+    <p>En ciudades pequenas e intermedias, los restaurantes gestionan pedidos por WhatsApp o Telegram de forma manual.</p>
+    <ul style="margin-top: 2rem;">
+        <li>Una persona dedicada a leer mensajes y transcribir pedidos</li>
+        <li>Errores al anotar direcciones, productos o precios</li>
+        <li>Sin visibilidad en tiempo real para la cocina</li>
+        <li>Sin historial organizado de pedidos</li>
+        <li>Cero presencia digital (sin pagina web, sin menu online)</li>
+    </ul>
+</div>
+
+<!-- Slide 3: La Solucion -->
+<div class="slide">
+    <h2>La Solucion</h2>
+    <p>FootStep le da a cada restaurante un <span class="highlight">enlace unico</span> con su menu digital. El cliente pide desde el celular, el restaurante recibe el pedido al instante.</p>
+    <div class="flow">
+        <div class="flow-step">Cliente abre el enlace</div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-step">Arma su pedido</div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-step">Confirma y paga</div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-step">Restaurante notificado</div>
+    </div>
+</div>
+
+<!-- Slide 4: Modulos - Admin -->
+<div class="slide">
+    <h2>Panel de Administracion</h2>
+    <p>El dueno del restaurante configura todo desde un solo lugar:</p>
+    <div class="grid-2" style="margin-top: 2rem;">
+        <div class="card">
+            <h3>Perfil y Marca</h3>
+            <p>Logo, banner, colores personalizados, direccion y telefono. Cada restaurante tiene su identidad visual.</p>
+        </div>
+        <div class="card">
+            <h3>Menu Completo</h3>
+            <p>Categorias, productos con fotos, precios, toppings opcionales y etiquetas destacadas.</p>
+        </div>
+        <div class="card">
+            <h3>Metodos de Pago</h3>
+            <p>Efectivo, transferencia bancaria o Bre-b. Configurable por restaurante.</p>
+        </div>
+        <div class="card">
+            <h3>Historial de Pedidos</h3>
+            <p>Consulta todos los pedidos con filtros por estado y fecha. Detalle completo de cada orden.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Modulos - Cliente -->
+<div class="slide">
+    <h2>Experiencia del Cliente</h2>
+    <p>Sin descargar apps. Sin crear cuenta. Solo abrir un enlace.</p>
+    <ul style="margin-top: 2rem;">
+        <li>Menu visual con fotos, precios y descripciones</li>
+        <li>Carrito de compras con toppings y notas especiales</li>
+        <li>Seleccion de entrega: domicilio, recoger o comer en el local</li>
+        <li>Formulario de direccion adaptado a Colombia</li>
+        <li>Seleccion de metodo de pago con calculo automatico</li>
+        <li>Confirmacion con numero de referencia para seguimiento</li>
+    </ul>
+</div>
+
+<!-- Slide 6: Modulos - Notificaciones y Cocina -->
+<div class="slide">
+    <h2>Notificaciones y Panel de Cocina</h2>
+    <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="card">
+            <h3>Telegram Automatico</h3>
+            <p>Cada pedido nuevo genera una notificacion instantanea en Telegram con todos los detalles: productos, direccion, metodo de pago y total. Reemplaza a la persona que antes leia mensajes.</p>
+        </div>
+        <div class="card">
+            <h3>Panel de Cocina (tiempo real)</h3>
+            <p>Pantalla para el chef con pedidos activos ordenados por llegada. Estados con colores: recibido, confirmado, en preparacion, completado. Actualizacion via WebSocket sin refrescar.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Arquitectura Tecnica -->
+<div class="slide">
+    <h2>Arquitectura Tecnica</h2>
+    <p>Monolito modular. Simple de desplegar, facil de mantener.</p>
+    <div class="diagram">  Astro SSR + React Islands (frontend)
+           |
+           | HTTPS (REST + WebSocket)
+           v
+  Django REST Framework (backend)
+           |
+    URL -> View -> Service -> Model -> DB
+                      |
+              S3 (imagenes) + Redis (real-time)
+           |
+           v
+     PostgreSQL (AWS RDS)</div>
+</div>
+
+<!-- Slide 8: Stack Tecnologico -->
+<div class="slide">
+    <h2>Stack Tecnologico</h2>
+    <p>Tecnologias modernas, probadas y de bajo costo operativo:</p>
+    <div class="tech-stack">
+        <span class="tech-tag">Django 5.2</span>
+        <span class="tech-tag">PostgreSQL 16</span>
+        <span class="tech-tag">Astro 7</span>
+        <span class="tech-tag">React</span>
+        <span class="tech-tag">Docker</span>
+        <span class="tech-tag">AWS S3</span>
+        <span class="tech-tag">Redis</span>
+        <span class="tech-tag">Django Channels</span>
+        <span class="tech-tag">JWT Auth</span>
+        <span class="tech-tag">Telegram Bot API</span>
+        <span class="tech-tag">WebSocket</span>
+        <span class="tech-tag">TypeScript</span>
+    </div>
+    <ul style="margin-top: 2.5rem;">
+        <li>Autenticacion JWT para duenos, sin auth para clientes</li>
+        <li>Imagenes subidas directamente a S3 via boto3</li>
+        <li>WebSocket (Django Channels + Redis) para panel de cocina</li>
+        <li>Contenedores Docker para desarrollo y despliegue</li>
+    </ul>
+</div>
+
+<!-- Slide 9: Diferenciadores -->
+<div class="slide">
+    <h2>Por que FootStep</h2>
+    <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="card">
+            <h3>Sin comisiones por pedido</h3>
+            <p>A diferencia de Rappi o iFood, no cobramos porcentaje por cada venta. El restaurante mantiene el 100% de sus ingresos.</p>
+        </div>
+        <div class="card">
+            <h3>Sin friccion para el cliente</h3>
+            <p>No necesita descargar app ni crear cuenta. Abre el link y pide. Funciona en cualquier celular con navegador.</p>
+        </div>
+        <div class="card">
+            <h3>Marca propia del restaurante</h3>
+            <p>Colores, logo y banner propios. No es una plataforma generica donde el restaurante se pierde entre miles.</p>
+        </div>
+        <div class="card">
+            <h3>Pensado para ciudades intermedias</h3>
+            <p>Diseado para restaurantes que hoy no tienen presencia digital. Simple, accesible y con soporte para pagos locales (efectivo, Bre-b).</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Cierre -->
+<div class="slide">
+    <h1>FootStep</h1>
+    <p class="subtitle">Dale a tu restaurante las herramientas que merece</p>
+    <p style="margin-top: 2rem; font-size: 1.2rem; color: #999;">Menu digital + Pedidos automatizados + Cocina en tiempo real</p>
+    <p style="margin-top: 3rem; font-size: 1.1rem; color: #666;">Contacto: ferr.7@homail.com</p>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+    <button onclick="prevSlide()">&#8592; Anterior</button>
+    <button onclick="nextSlide()">Siguiente &#8594;</button>
+</div>
+<div class="counter" id="counter">1 / 10</div>
+
+<script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    const total = slides.length;
+
+    function showSlide(n) {
+        slides[current].classList.remove('active');
+        current = (n + total) % total;
+        slides[current].classList.add('active');
+        counter.textContent = `${current + 1} / ${total}`;
+    }
+
+    function nextSlide() { showSlide(current + 1); }
+    function prevSlide() { showSlide(current - 1); }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+
+    // Touch support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+            diff > 0 ? nextSlide() : prevSlide();
+        }
+    });
+</script>
+
+</body>
+</html>

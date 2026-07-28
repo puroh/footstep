@@ -44,7 +44,7 @@ services:
     ports:
       - "4321:4321"
     environment:
-      PUBLIC_API_BASE: http://localhost:8000/api/v1
+      PUBLIC_API_BASE: http://192.168.100.165:8000/api/v1
       API_BASE_INTERNAL: http://backend:8000/api/v1
     depends_on:
       - backend
