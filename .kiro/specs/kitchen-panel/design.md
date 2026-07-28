@@ -57,7 +57,7 @@ Client confirms order → POST /api/v1/orders/ (client-ordering module)
 ### Module Structure
 
 ```
-tragon_backend/
+footstep_backend/
 ├── config/
 │   ├── asgi.py              # Updated: Channels + WebSocket routing
 │   └── settings/
@@ -290,7 +290,7 @@ daphne==4.1.2
 ### Page Structure
 
 ```
-tragon_frontend/
+footstep_frontend/
 ├── src/
 │   ├── pages/
 │   │   └── kitchen/

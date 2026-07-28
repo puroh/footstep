@@ -1,4 +1,4 @@
-# Tragón
+# FootStep
 
 Plataforma que automatiza la toma de pedidos para restaurantes. Los clientes acceden al menú del restaurante mediante un link compartido por chat (Telegram/WhatsApp), realizan su pedido desde el navegador, y el restaurante lo gestiona en tiempo real desde un panel interno.
 
@@ -19,8 +19,8 @@ Plataforma que automatiza la toma de pedidos para restaurantes. Los clientes acc
 ## Estructura del Proyecto
 
 ```
-Tragon/
-├── tragon_backend/        # Django REST API
+FootStep/
+├── footstep_backend/      # Django REST API
 │   ├── apps/
 │   │   ├── restaurants/   # Modelos Restaurant, Owner, auth JWT
 │   │   ├── catalog/       # Category, Product, Topping
@@ -28,7 +28,7 @@ Tragon/
 │   ├── config/            # Settings, URLs, WSGI
 │   ├── pyproject.toml     # Dependencias Python (uv)
 │   └── Dockerfile
-├── tragon_frontend/       # Astro SSR + React islands
+├── footstep_frontend/     # Astro SSR + React islands
 │   ├── src/
 │   │   ├── pages/         # Rutas (menú público, admin, cocina)
 │   │   ├── components/    # Componentes React
@@ -54,7 +54,7 @@ La forma más rápida de levantar todo el entorno:
 
 ```bash
 # 1. Clonar el repositorio
-git clone <repo-url> && cd Tragon
+git clone <repo-url> && cd FootStep
 
 # 2. Levantar todos los servicios
 docker compose up --build -d
@@ -118,18 +118,18 @@ Instala y configura PostgreSQL localmente:
 
 ```bash
 # Crear la base de datos
-createdb tragon
-createuser tragon --password  # password: tragon
+createdb footstep
+createuser footstep --password  # password: footstep
 
 # O usar psql
-psql -c "CREATE USER tragon WITH PASSWORD 'tragon';"
-psql -c "CREATE DATABASE tragon OWNER tragon;"
+psql -c "CREATE USER footstep WITH PASSWORD 'footstep';"
+psql -c "CREATE DATABASE footstep OWNER footstep;"
 ```
 
 ### 2. Backend
 
 ```bash
-cd tragon_backend
+cd footstep_backend
 
 # Instalar uv si no lo tienes
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -139,9 +139,9 @@ uv sync
 
 # Variables de entorno (crear archivo .env o exportar)
 export DJANGO_SETTINGS_MODULE=config.settings.development
-export POSTGRES_DB=tragon
-export POSTGRES_USER=tragon
-export POSTGRES_PASSWORD=tragon
+export POSTGRES_DB=footstep
+export POSTGRES_USER=footstep
+export POSTGRES_PASSWORD=footstep
 export POSTGRES_HOST=localhost
 export POSTGRES_PORT=5432
 
@@ -163,7 +163,7 @@ El backend estará en http://localhost:8000
 ### 3. Frontend
 
 ```bash
-cd tragon_frontend
+cd footstep_frontend
 
 # Instalar pnpm si no lo tienes
 npm install -g pnpm
@@ -188,14 +188,14 @@ El frontend estará en http://localhost:4321
 |----------|-------------|---------------|
 | `DJANGO_SETTINGS_MODULE` | Módulo de settings | `config.settings.development` |
 | `DJANGO_SECRET_KEY` | Clave secreta Django | `insecure-dev-key...` |
-| `POSTGRES_DB` | Nombre de la BD | `tragon` |
-| `POSTGRES_USER` | Usuario de BD | `tragon` |
-| `POSTGRES_PASSWORD` | Contraseña de BD | `tragon` |
+| `POSTGRES_DB` | Nombre de la BD | `footstep` |
+| `POSTGRES_USER` | Usuario de BD | `footstep` |
+| `POSTGRES_PASSWORD` | Contraseña de BD | `footstep` |
 | `POSTGRES_HOST` | Host de BD | `localhost` |
 | `POSTGRES_PORT` | Puerto de BD | `5432` |
 | `AWS_ACCESS_KEY_ID` | AWS Access Key | (vacío) |
 | `AWS_SECRET_ACCESS_KEY` | AWS Secret Key | (vacío) |
-| `AWS_STORAGE_BUCKET_NAME` | Bucket S3 | `tragon-uploads` |
+| `AWS_STORAGE_BUCKET_NAME` | Bucket S3 | `footstep-uploads` |
 | `AWS_S3_REGION_NAME` | Región S3 | `us-east-1` |
 | `CORS_ALLOWED_ORIGINS` | Orígenes CORS | `http://localhost:4321` |
 
@@ -222,12 +222,12 @@ La API está versionada bajo `/api/v1/`. Endpoints principales:
 
 ```bash
 # Backend (Python)
-cd tragon_backend
+cd footstep_backend
 uv run ruff format .
 uv run ruff check .
 
 # Frontend (TypeScript/TSX)
-cd tragon_frontend
+cd footstep_frontend
 pnpm format  # si está configurado
 ```
 

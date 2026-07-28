@@ -1,4 +1,4 @@
-# ARCHITECTURE.md — Tragón
+# ARCHITECTURE.md — FootStep
 
 > Top-level system map. Keep concise; point to deeper docs when needed.
 > For non-negotiable behavioral rules, see `.kiro/steering/constraints.md`.

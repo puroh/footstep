@@ -1,0 +1,22 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import OrderTracking from "@/components/OrderTracking";
+
+const { ref } = Astro.params;
+const API_BASE = import.meta.env.API_BASE_INTERNAL ?? "http://backend:8000/api/v1";
+
+const orderRes = await fetch(`${API_BASE}/orders/track/${ref}/`);
+
+let order = null;
+let error = null;
+
+if (orderRes.ok) {
+  order = await orderRes.json();
+} else {
+  error = "not_found";
+}
+---
+
+<BaseLayout title={order ? `Pedido #${order.reference_number}` : "Pedido no encontrado"}>
+  <OrderTracking client:load order={order} error={error} />
+</BaseLayout>

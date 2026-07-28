@@ -7,7 +7,7 @@ Build the restaurant-admin module from scratch: Django backend (models, auth, AP
 ## Tasks
 
 - [x] 1. Backend project setup
-  - Create `tragon_backend/` with `pyproject.toml` (Django 5.2.x, djangorestframework, djangorestframework-simplejwt, django-cors-headers, psycopg[binary], boto3, pillow)
+  - Create `footstep_backend/` with `pyproject.toml` (Django 5.2.x, djangorestframework, djangorestframework-simplejwt, django-cors-headers, psycopg[binary], boto3, pillow)
   - Initialize with `uv`: `uv init`, `uv sync`
   - Create `config/settings/base.py`, `development.py`, `production.py`
   - Configure `INSTALLED_APPS`, `REST_FRAMEWORK`, `SIMPLE_JWT`, `CORS`, custom exception handler
@@ -110,7 +110,7 @@ Build the restaurant-admin module from scratch: Django backend (models, auth, AP
   - _Requirements: R4.1, R4.2, R4.3_
 
 - [x] 11. Frontend project setup
-  - Create `tragon_frontend/` with Astro 7.x, React integration, TailwindCSS
+  - Create `footstep_frontend/` with Astro 7.x, React integration, TailwindCSS
   - Configure SSR adapter, `astro.config.mjs`
   - Install: nanostores, @nanostores/react
   - Create `src/stores/auth.ts` — JWT token management (access, refresh, isAuthenticated, auto-refresh on 401)

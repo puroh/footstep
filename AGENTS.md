@@ -5,7 +5,7 @@ The goal is to leave the repo in a state where the next session can continue wit
 
 ## Project Overview
 
-Tragón — Platform that automates order taking for restaurants.
+FootStep — Platform that automates order taking for restaurants.
 Django 5.2.x + PostgreSQL + Astro 7.x + Django Channels + Redis + S3 + Docker.
 
 ## Startup Workflow

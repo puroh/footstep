@@ -2,52 +2,68 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: tragon
-      POSTGRES_USER: tragon
-      POSTGRES_PASSWORD: tragon
+      POSTGRES_DB: footstep
+      POSTGRES_USER: footstep
+      POSTGRES_PASSWORD: footstep
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tragon"]
+      test: ["CMD-SHELL", "pg_isready -U footstep"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 3s
       retries: 5
 
   backend:
     build:
-      context: ./tragon_backend
+      context: ./footstep_backend
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.development
-      POSTGRES_DB: tragon
-      POSTGRES_USER: tragon
-      POSTGRES_PASSWORD: tragon
+      POSTGRES_DB: footstep
+      POSTGRES_USER: footstep
+      POSTGRES_PASSWORD: footstep
       POSTGRES_HOST: postgres
       POSTGRES_PORT: "5432"
+      REDIS_URL: redis://redis:6379/0
       DJANGO_SECRET_KEY: dev-secret-key-not-for-production
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
-      - ./tragon_backend:/app
+      - ./footstep_backend:/app
       - /app/.venv
 
   frontend:
     build:
-      context: ./tragon_frontend
+      context: ./footstep_frontend
       dockerfile: Dockerfile
     ports:
       - "4321:4321"
     environment:
-      PUBLIC_API_BASE: http://localhost:8000/api/v1
+      PUBLIC_API_BASE: http://192.168.100.165:8000/api/v1
       API_BASE_INTERNAL: http://backend:8000/api/v1
     depends_on:
       - backend
 
 volumes:
   postgres_data:
+  redis_data:

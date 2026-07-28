@@ -102,3 +102,17 @@ Depends on: restaurant-admin module (restaurant with products and payment method
 3. THE system SHALL return paginated responses for list queries.
 4. WHEN the client submits an order, THE system SHALL validate that all referenced products belong to the restaurant identified by the slug.
 5. IF validation fails, THEN THE system SHALL reject the order with a descriptive error message.
+
+### Requirement 8: Order Tracking Page
+
+**User Story:** As a client, I want to tap my order reference number and see a page with the full order details and current status, so that I can track my order from any device.
+
+#### Acceptance Criteria
+
+1. WHEN the order is confirmed, THE system SHALL display the reference number as a clickable link on the confirmation screen.
+2. WHEN the client taps the reference number link, THE system SHALL navigate to a dedicated order tracking page.
+3. THE order tracking page SHALL display: reference number, order status, item list with toppings and special instructions, delivery type, address (if delivery), payment method, subtotal, delivery fee (if applicable), and total.
+4. THE order tracking page SHALL display the current order status with a visual indicator (e.g. progress steps or color-coded badge).
+5. THE order tracking page SHALL be responsive and usable on both mobile phones and desktop computers.
+6. THE order tracking page SHALL be accessible without authentication using only the reference number in the URL.
+7. IF the reference number does not exist, THEN THE system SHALL display an error message indicating the order was not found.

@@ -1,6 +1,6 @@
 # DATABASE.md
 
-Living document tracking the normalized PostgreSQL schema for Tragón. This is a work in progress — constraints are being filled in incrementally.
+Living document tracking the normalized PostgreSQL schema for FootStep. This is a work in progress — constraints are being filled in incrementally.
 
 ## Status
 
