@@ -1,0 +1,14 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AdminNav from "@/components/AdminNav.astro";
+import MenuManager from "@/components/MenuManager";
+---
+
+<BaseLayout title="Gestión de Menú">
+  <div class="min-h-screen bg-gray-50">
+    <AdminNav />
+    <main class="max-w-7xl mx-auto p-6">
+      <MenuManager client:load />
+    </main>
+  </div>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PublicMenu from "@/components/PublicMenu";
+
+const { slug } = Astro.params;
+const API_BASE = import.meta.env.API_BASE_INTERNAL ?? "http://backend:8000/api/v1";
+
+// Fetch public menu (includes restaurant info)
+const menuRes = await fetch(`${API_BASE}/catalog/${slug}/menu/`);
+if (!menuRes.ok) {
+  return Astro.redirect("/404");
+}
+const menuData = await menuRes.json();
+const restaurant = menuData.restaurant;
+---
+
+<BaseLayout title={restaurant.name}>
+  <PublicMenu client:load restaurant={restaurant} menuData={menuData} slug={slug!} />
+</BaseLayout>
