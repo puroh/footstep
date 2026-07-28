@@ -3,7 +3,7 @@ import { atom, computed } from "nanostores";
 const ACCESS_TOKEN_KEY = "footstep_access_token";
 const REFRESH_TOKEN_KEY = "footstep_refresh_token";
 
-const API_BASE = import.meta.env.PUBLIC_API_BASE ?? "http://192.168.100.165:8000/api/v1";
+const API_BASE = import.meta.env.PUBLIC_API_BASE ?? "http://localhost:8000/api/v1";
 
 // Reactive stores for tokens
 export const $accessToken = atom<string | null>(getStoredToken(ACCESS_TOKEN_KEY));
