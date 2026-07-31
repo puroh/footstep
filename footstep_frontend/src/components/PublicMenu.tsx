@@ -22,16 +22,43 @@ function isRestaurantOpen(operatingHours?: OperatingHourEntry[]): boolean {
   if (!operatingHours || operatingHours.length === 0) return true; // No schedule = always open
   const now = new Date();
   const weekday = (now.getDay() + 6) % 7; // JS: 0=Sun → Python: 0=Mon
-  const entry = operatingHours.find((h) => h.weekday === weekday);
-  if (!entry) return false; // No entry for today = closed
-
+  const previousWeekday = (weekday + 6) % 7;
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
-  const [openH, openM] = entry.open_time.split(":").map(Number);
-  const [closeH, closeM] = entry.close_time.split(":").map(Number);
-  const openMinutes = openH * 60 + openM;
-  const closeMinutes = closeH * 60 + closeM;
 
-  return currentMinutes >= openMinutes && currentMinutes <= closeMinutes;
+  const toMinutes = (timeStr: string) => {
+    const [h, m] = timeStr.split(":").map(Number);
+    return h * 60 + m;
+  };
+
+  // Check today's schedule
+  const today = operatingHours.find((h) => h.weekday === weekday);
+  if (today) {
+    const openMin = toMinutes(today.open_time);
+    const closeMin = toMinutes(today.close_time);
+
+    if (openMin <= closeMin) {
+      // Normal hours (e.g. 10:00 - 22:00)
+      if (currentMinutes >= openMin && currentMinutes <= closeMin) return true;
+    } else {
+      // Overnight: open today, close tomorrow (e.g. 17:00 - 03:00)
+      // We're past the opening time today
+      if (currentMinutes >= openMin) return true;
+    }
+  }
+
+  // Check if yesterday's overnight shift extends into now
+  const yesterday = operatingHours.find((h) => h.weekday === previousWeekday);
+  if (yesterday) {
+    const openMin = toMinutes(yesterday.open_time);
+    const closeMin = toMinutes(yesterday.close_time);
+
+    if (openMin > closeMin) {
+      // Yesterday had an overnight shift — check if we're still within it
+      if (currentMinutes <= closeMin) return true;
+    }
+  }
+
+  return false;
 }
 
 const API_BASE = typeof window !== "undefined"

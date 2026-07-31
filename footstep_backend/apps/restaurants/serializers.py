@@ -126,23 +126,13 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
 
 
 class OperatingHourSerializer(serializers.ModelSerializer):
-    """Serializer for operating hours CRUD."""
+    """Serializer for operating hours CRUD.
+
+    Supports overnight schedules where close_time < open_time
+    (e.g. open at 17:00, close at 03:00 next day).
+    """
 
     class Meta:
         model = OperatingHour
         fields = ["id", "weekday", "open_time", "close_time"]
         read_only_fields = ["id"]
-
-    def validate(self, attrs):
-        open_time = attrs.get("open_time", getattr(self.instance, "open_time", None))
-        close_time = attrs.get("close_time", getattr(self.instance, "close_time", None))
-
-        if open_time and close_time and open_time >= close_time:
-            raise serializers.ValidationError(
-                {
-                    "close_time": [
-                        "La hora de cierre debe ser posterior a la hora de apertura."
-                    ]
-                }
-            )
-        return attrs

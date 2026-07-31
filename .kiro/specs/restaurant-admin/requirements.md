@@ -93,7 +93,8 @@ The restaurant-admin module provides restaurant owners with tools to configure t
 3. FOR each enabled day, THE system SHALL allow setting an opening time and a closing time.
 4. WHEN the owner saves the schedule, THE system SHALL persist it and use it to restrict order placement.
 5. IF no schedule is configured (zero days enabled), THEN THE system SHALL treat the restaurant as always open (no restriction).
-6. THE system SHALL validate that the closing time is after the opening time for each enabled day.
+6. THE system SHALL support overnight schedules where the closing time is earlier than the opening time (e.g. open at 17:00 and close at 03:00 the next day). In this case, the restaurant is considered open from the opening time until midnight, and from midnight until the closing time the following day.
+7. WHEN evaluating if the restaurant is currently open, THE system SHALL check both the current day's schedule AND the previous day's schedule (in case the previous day's shift extends past midnight into today).
 
 
 ### Requirement 7: Logout

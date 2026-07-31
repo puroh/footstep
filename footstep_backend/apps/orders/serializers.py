@@ -161,18 +161,54 @@ class PublicOrderCreateSerializer(serializers.Serializer):
         current_weekday = now.weekday()
         current_time = now.time()
 
-        schedule = OperatingHour.objects.filter(
+        # Check today's schedule
+        schedule_today = OperatingHour.objects.filter(
             restaurant=restaurant, weekday=current_weekday
         ).first()
 
-        if schedule is None:
-            raise serializers.ValidationError(
-                {"restaurant_slug": ("El restaurante no está en horario de atención.")}
-            )
-        if not (schedule.open_time <= current_time <= schedule.close_time):
-            raise serializers.ValidationError(
-                {"restaurant_slug": ("El restaurante no está en horario de atención.")}
-            )
+        # Check previous day's schedule (for overnight shifts extending into today)
+        previous_weekday = (current_weekday - 1) % 7
+        schedule_yesterday = OperatingHour.objects.filter(
+            restaurant=restaurant, weekday=previous_weekday
+        ).first()
+
+        # If no schedule exists at all, restaurant is always open
+        has_any_schedule = OperatingHour.objects.filter(restaurant=restaurant).exists()
+
+        if has_any_schedule:
+            is_open = False
+
+            # Case 1: Today's schedule, normal hours (open <= close)
+            if schedule_today and schedule_today.open_time <= schedule_today.close_time:
+                if (
+                    schedule_today.open_time
+                    <= current_time
+                    <= schedule_today.close_time
+                ):
+                    is_open = True
+
+            # Case 2: Today's schedule, overnight (open > close)
+            # Currently past the opening time today
+            if schedule_today and schedule_today.open_time > schedule_today.close_time:
+                if current_time >= schedule_today.open_time:
+                    is_open = True
+
+            # Case 3: Yesterday's overnight shift extends into today
+            if (
+                schedule_yesterday
+                and schedule_yesterday.open_time > schedule_yesterday.close_time
+            ):
+                if current_time <= schedule_yesterday.close_time:
+                    is_open = True
+
+            if not is_open:
+                raise serializers.ValidationError(
+                    {
+                        "restaurant_slug": (
+                            "El restaurante no está en horario de atención."
+                        )
+                    }
+                )
 
         # --- Payment method ---
         try:
