@@ -10,12 +10,29 @@ interface Topping { id: string; name: string; extra_price: number; is_active: bo
 interface Product { id: string; name: string; description: string; photo_url: string; base_price: number; is_active: boolean; label: string; toppings: Topping[]; }
 interface Category { id: string; name: string; is_active: boolean; products: Product[]; }
 interface PaymentMethod { id: string; type: string; key_value: string; is_active: boolean; }
-interface Restaurant { id: string; name: string; slug: string; logo_url: string; address_line: string; delivery_fee: number; payment_methods?: PaymentMethod[]; }
+interface Restaurant { id: string; name: string; slug: string; logo_url: string; address_line: string; delivery_fee: number; payment_methods?: PaymentMethod[]; operating_hours?: OperatingHourEntry[]; }
+interface OperatingHourEntry { weekday: number; open_time: string; close_time: string; }
 interface MenuData { restaurant: Restaurant; categories: Category[]; uncategorized_products: Product[]; }
 interface Props { restaurant: Restaurant; menuData: MenuData; slug: string; }
 
 type Step = "menu" | "delivery" | "address" | "payment" | "confirmation";
 type DeliveryType = "delivery" | "pickup" | "dine_in";
+
+function isRestaurantOpen(operatingHours?: OperatingHourEntry[]): boolean {
+  if (!operatingHours || operatingHours.length === 0) return true; // No schedule = always open
+  const now = new Date();
+  const weekday = (now.getDay() + 6) % 7; // JS: 0=Sun → Python: 0=Mon
+  const entry = operatingHours.find((h) => h.weekday === weekday);
+  if (!entry) return false; // No entry for today = closed
+
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const [openH, openM] = entry.open_time.split(":").map(Number);
+  const [closeH, closeM] = entry.close_time.split(":").map(Number);
+  const openMinutes = openH * 60 + openM;
+  const closeMinutes = closeH * 60 + closeM;
+
+  return currentMinutes >= openMinutes && currentMinutes <= closeMinutes;
+}
 
 const API_BASE = typeof window !== "undefined"
   ? (import.meta.env.PUBLIC_API_BASE ?? "http://192.168.100.165:8000/api/v1")
@@ -40,6 +57,17 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
   const categories = menuData.categories || [];
   const uncategorized = menuData.uncategorized_products || [];
   const paymentMethods = (restaurant.payment_methods || []).filter(pm => pm.is_active);
+
+  // Check if restaurant is currently within operating hours
+  const [isOpen, setIsOpen] = useState(() => isRestaurantOpen(restaurant.operating_hours));
+
+  // Re-check every minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsOpen(isRestaurantOpen(restaurant.operating_hours));
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [restaurant.operating_hours]);
 
   // Compute totals
   const orderTotal = computeOrderTotal(cartItems, restaurant.delivery_fee, deliveryType);
@@ -281,10 +309,15 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
           {restaurant.logo_url && <img src={mediaUrl(restaurant.logo_url)} alt={restaurant.name} className="w-12 h-12 rounded-full object-cover" />}
-          <div>
+          <div className="flex-1">
             <h1 className="text-xl font-bold text-gray-900">{restaurant.name}</h1>
             <p className="text-sm text-gray-500">{restaurant.address_line}</p>
           </div>
+          {!isOpen && (
+            <span className="px-3 py-1 bg-red-100 text-red-700 text-sm font-semibold rounded-full border border-red-200">
+              Sin servicio
+            </span>
+          )}
         </div>
       </header>
 
@@ -344,9 +377,21 @@ export default function PublicMenu({ restaurant, menuData, slug }: Props) {
             </div>
             <div className="flex gap-2">
               <button onClick={clearCart} className="px-4 py-2 text-sm text-red-600 border border-red-200 rounded-lg">Cancelar pedido</button>
-              <button onClick={handlePay} className="px-6 py-2 text-sm bg-green-600 text-white rounded-lg font-medium">Pagar</button>
+              <button
+                onClick={handlePay}
+                disabled={!isOpen}
+                className={`px-6 py-2 text-sm rounded-lg font-medium ${isOpen ? "bg-green-600 text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                title={!isOpen ? "El restaurante no está en horario de atención" : undefined}
+              >
+                Pagar
+              </button>
             </div>
           </div>
+          {!isOpen && (
+            <p className="max-w-4xl mx-auto text-xs text-red-600 mt-2 text-center">
+              El restaurante no está en horario de atención. No puedes realizar pedidos en este momento.
+            </p>
+          )}
         </div>
       )}
 

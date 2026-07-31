@@ -10,9 +10,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import PaymentMethod
+from .models import OperatingHour, PaymentMethod
 from .permissions import IsRestaurantOwner
 from .serializers import (
+    OperatingHourSerializer,
     PaymentMethodSerializer,
     RegistrationSerializer,
     RestaurantSerializer,
@@ -283,3 +284,51 @@ class PaymentMethodDetailView(APIView):
             )
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# --- Operating Hours ---
+
+
+class OperatingHoursView(APIView):
+    """GET/PUT /api/v1/restaurants/me/operating-hours/
+
+    GET: Returns the list of operating hours for the restaurant.
+    PUT: Replaces the entire schedule (bulk upsert). Expects a list of
+         {weekday, open_time, close_time} objects. Days not included are
+         deleted (meaning the restaurant is closed that day).
+    """
+
+    permission_classes = [IsRestaurantOwner]
+
+    def get(self, request):
+        restaurant = request.user.restaurant
+        hours = OperatingHour.objects.filter(restaurant=restaurant)
+        serializer = OperatingHourSerializer(hours, many=True)
+        return Response(serializer.data)
+
+    def put(self, request):
+        restaurant = request.user.restaurant
+        serializer = OperatingHourSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+
+        # Delete existing schedule and recreate
+        OperatingHour.objects.filter(restaurant=restaurant).delete()
+
+        created = []
+        seen_weekdays = set()
+        for item in serializer.validated_data:
+            weekday = item["weekday"]
+            if weekday in seen_weekdays:
+                continue  # Skip duplicates, keep first
+            seen_weekdays.add(weekday)
+            created.append(
+                OperatingHour.objects.create(
+                    restaurant=restaurant,
+                    weekday=weekday,
+                    open_time=item["open_time"],
+                    close_time=item["close_time"],
+                )
+            )
+
+        result = OperatingHourSerializer(created, many=True)
+        return Response(result.data)

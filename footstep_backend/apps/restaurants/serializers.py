@@ -5,7 +5,7 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Owner, PaymentMethod, Restaurant
+from .models import OperatingHour, Owner, PaymentMethod, Restaurant
 
 
 class RegistrationSerializer(serializers.Serializer):
@@ -122,4 +122,27 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
                         ]
                     }
                 )
+        return attrs
+
+
+class OperatingHourSerializer(serializers.ModelSerializer):
+    """Serializer for operating hours CRUD."""
+
+    class Meta:
+        model = OperatingHour
+        fields = ["id", "weekday", "open_time", "close_time"]
+        read_only_fields = ["id"]
+
+    def validate(self, attrs):
+        open_time = attrs.get("open_time", getattr(self.instance, "open_time", None))
+        close_time = attrs.get("close_time", getattr(self.instance, "close_time", None))
+
+        if open_time and close_time and open_time >= close_time:
+            raise serializers.ValidationError(
+                {
+                    "close_time": [
+                        "La hora de cierre debe ser posterior a la hora de apertura."
+                    ]
+                }
+            )
         return attrs

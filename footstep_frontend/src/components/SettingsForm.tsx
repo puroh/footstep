@@ -33,6 +33,24 @@ const PAYMENT_TYPE_LABELS: Record<PaymentMethodType, string> = {
   transfer_with_key: "Transferencia con clave",
 };
 
+// Operating hours types
+interface ScheduleEntry {
+  weekday: number;
+  open_time: string;
+  close_time: string;
+  enabled: boolean;
+}
+
+const WEEKDAY_LABELS = [
+  "Lunes",
+  "Martes",
+  "Miércoles",
+  "Jueves",
+  "Viernes",
+  "Sábado",
+  "Domingo",
+];
+
 // Default coordinates (Colombia center)
 const DEFAULT_LAT = 4.6097;
 const DEFAULT_LNG = -74.0817;
@@ -80,10 +98,18 @@ export default function SettingsForm() {
   const [pmFormSaving, setPmFormSaving] = useState(false);
   const [pmFormError, setPmFormError] = useState("");
 
+  // Operating hours state
+  const [schedule, setSchedule] = useState<ScheduleEntry[]>([]);
+  const [scheduleLoading, setScheduleLoading] = useState(true);
+  const [scheduleSaving, setScheduleSaving] = useState(false);
+  const [scheduleMessage, setScheduleMessage] = useState("");
+  const [scheduleError, setScheduleError] = useState("");
+
   // Load profile and payment methods on mount
   useEffect(() => {
     fetchProfile();
     fetchPaymentMethods();
+    fetchSchedule();
     setMapReady(true);
   }, []);
 
@@ -308,6 +334,79 @@ export default function SettingsForm() {
     } catch {
       setPmError("Error de conexión.");
     }
+  }
+
+  // --- Operating Hours ---
+
+  async function fetchSchedule() {
+    setScheduleLoading(true);
+    try {
+      const res = await apiGet("/restaurants/me/operating-hours/");
+      if (res.ok) {
+        const data = await res.json();
+        // Build full 7-day schedule, marking days that have records as enabled
+        const existing = Array.isArray(data) ? data : data.results ?? [];
+        const full: ScheduleEntry[] = Array.from({ length: 7 }, (_, i) => {
+          const found = existing.find((e: any) => e.weekday === i);
+          return {
+            weekday: i,
+            open_time: found ? found.open_time.slice(0, 5) : "08:00",
+            close_time: found ? found.close_time.slice(0, 5) : "20:00",
+            enabled: !!found,
+          };
+        });
+        setSchedule(full);
+      }
+    } catch {
+      setScheduleError("Error al cargar horarios.");
+    } finally {
+      setScheduleLoading(false);
+    }
+  }
+
+  async function handleScheduleSave() {
+    setScheduleSaving(true);
+    setScheduleMessage("");
+    setScheduleError("");
+
+    const payload = schedule
+      .filter((s) => s.enabled)
+      .map((s) => ({
+        weekday: s.weekday,
+        open_time: s.open_time,
+        close_time: s.close_time,
+      }));
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.PUBLIC_API_BASE ?? "http://192.168.100.165:8000/api/v1"}/restaurants/me/operating-hours/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("footstep_access_token")}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (res.ok) {
+        setScheduleMessage("Horario actualizado correctamente.");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setScheduleError(data.detail ?? "Error al guardar el horario.");
+      }
+    } catch {
+      setScheduleError("Error de conexión.");
+    } finally {
+      setScheduleSaving(false);
+    }
+  }
+
+  function updateScheduleEntry(weekday: number, field: string, value: string | boolean) {
+    setSchedule((prev) =>
+      prev.map((s) => (s.weekday === weekday ? { ...s, [field]: value } : s))
+    );
   }
 
   // --- Render ---
@@ -678,6 +777,70 @@ export default function SettingsForm() {
             </form>
           </div>
         )}
+      </section>
+
+      {/* Operating Hours Section */}
+      <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Horario de funcionamiento</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Configura los días y horas en que tu restaurante acepta pedidos. Los días desactivados aparecerán como "Sin servicio".
+        </p>
+
+        {scheduleLoading ? (
+          <p className="text-gray-500 text-sm">Cargando horarios...</p>
+        ) : (
+          <div className="space-y-3">
+            {schedule.map((entry) => (
+              <div key={entry.weekday} className={`flex items-center gap-3 p-3 rounded-lg border ${entry.enabled ? "border-gray-200 bg-white" : "border-gray-100 bg-gray-50"}`}>
+                <input
+                  type="checkbox"
+                  checked={entry.enabled}
+                  onChange={(e) => updateScheduleEntry(entry.weekday, "enabled", e.target.checked)}
+                  className="rounded border-gray-300 text-orange-600 focus:ring-orange-500 w-4 h-4"
+                />
+                <span className={`w-24 text-sm font-medium ${entry.enabled ? "text-gray-900" : "text-gray-400"}`}>
+                  {WEEKDAY_LABELS[entry.weekday]}
+                </span>
+                {entry.enabled && (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="time"
+                      value={entry.open_time}
+                      onChange={(e) => updateScheduleEntry(entry.weekday, "open_time", e.target.value)}
+                      className="px-2 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                    <span className="text-gray-500 text-sm">a</span>
+                    <input
+                      type="time"
+                      value={entry.close_time}
+                      onChange={(e) => updateScheduleEntry(entry.weekday, "close_time", e.target.value)}
+                      className="px-2 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+                )}
+                {!entry.enabled && (
+                  <span className="text-sm text-gray-400 italic">Cerrado</span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {scheduleMessage && (
+          <p className="text-sm text-green-600 bg-green-50 p-3 rounded-md mt-4">{scheduleMessage}</p>
+        )}
+        {scheduleError && (
+          <p className="text-sm text-red-600 bg-red-50 p-3 rounded-md mt-4">{scheduleError}</p>
+        )}
+
+        <button
+          type="button"
+          onClick={handleScheduleSave}
+          disabled={scheduleSaving}
+          className="mt-4 px-4 py-2 bg-orange-600 text-white font-medium rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {scheduleSaving ? "Guardando..." : "Guardar horario"}
+        </button>
       </section>
     </div>
   );

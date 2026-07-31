@@ -152,6 +152,28 @@ class PublicOrderCreateSerializer(serializers.Serializer):
             )
         attrs["restaurant"] = restaurant
 
+        # --- Operating hours check ---
+        from django.utils import timezone
+
+        from apps.restaurants.models import OperatingHour
+
+        now = timezone.localtime(timezone.now())
+        current_weekday = now.weekday()
+        current_time = now.time()
+
+        schedule = OperatingHour.objects.filter(
+            restaurant=restaurant, weekday=current_weekday
+        ).first()
+
+        if schedule is None:
+            raise serializers.ValidationError(
+                {"restaurant_slug": ("El restaurante no está en horario de atención.")}
+            )
+        if not (schedule.open_time <= current_time <= schedule.close_time):
+            raise serializers.ValidationError(
+                {"restaurant_slug": ("El restaurante no está en horario de atención.")}
+            )
+
         # --- Payment method ---
         try:
             payment_method = PaymentMethod.objects.get(

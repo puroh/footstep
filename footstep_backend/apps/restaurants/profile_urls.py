@@ -3,6 +3,7 @@
 from django.urls import path
 
 from .views import (
+    OperatingHoursView,
     PaymentMethodDetailView,
     PaymentMethodListCreateView,
     RestaurantProfileView,
@@ -29,5 +30,10 @@ urlpatterns = [
         "me/payment-methods/<uuid:pk>/",
         PaymentMethodDetailView.as_view(),
         name="payment-methods-detail",
+    ),
+    path(
+        "me/operating-hours/",
+        OperatingHoursView.as_view(),
+        name="operating-hours",
     ),
 ]

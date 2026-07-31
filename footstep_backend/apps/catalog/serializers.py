@@ -139,6 +139,7 @@ class PublicRestaurantSerializer(serializers.ModelSerializer):
     """Basic restaurant info for the public menu, including payment methods."""
 
     payment_methods = serializers.SerializerMethodField()
+    operating_hours = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -152,8 +153,20 @@ class PublicRestaurantSerializer(serializers.ModelSerializer):
             "address_line",
             "delivery_fee",
             "payment_methods",
+            "operating_hours",
         ]
 
     def get_payment_methods(self, obj):
         active_methods = obj.payment_methods.filter(is_active=True)
         return PublicPaymentMethodSerializer(active_methods, many=True).data
+
+    def get_operating_hours(self, obj):
+        hours = obj.operating_hours.all()
+        return [
+            {
+                "weekday": h.weekday,
+                "open_time": h.open_time.strftime("%H:%M"),
+                "close_time": h.close_time.strftime("%H:%M"),
+            }
+            for h in hours
+        ]

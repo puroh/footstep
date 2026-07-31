@@ -116,3 +116,47 @@ class PaymentMethod(models.Model):
 
     def __str__(self):
         return f"{self.restaurant.name} - {self.get_type_display()}"
+
+
+class OperatingHour(models.Model):
+    """Operating hours for a restaurant by day of week.
+
+    Each record represents one day when the restaurant is open.
+    Days without a record mean the restaurant is closed that day.
+    Weekday values follow Python's convention: 0=Monday, 6=Sunday.
+    """
+
+    class Weekday(models.IntegerChoices):
+        MONDAY = 0, "Monday"
+        TUESDAY = 1, "Tuesday"
+        WEDNESDAY = 2, "Wednesday"
+        THURSDAY = 3, "Thursday"
+        FRIDAY = 4, "Friday"
+        SATURDAY = 5, "Saturday"
+        SUNDAY = 6, "Sunday"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    restaurant = models.ForeignKey(
+        Restaurant,
+        on_delete=models.CASCADE,
+        related_name="operating_hours",
+    )
+    weekday = models.IntegerField(choices=Weekday.choices)
+    open_time = models.TimeField()
+    close_time = models.TimeField()
+
+    class Meta:
+        db_table = "operating_hour"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["restaurant", "weekday"],
+                name="unique_restaurant_weekday",
+            ),
+        ]
+        ordering = ["weekday"]
+
+    def __str__(self):
+        return (
+            f"{self.restaurant.name} - "
+            f"{self.get_weekday_display()}: {self.open_time}-{self.close_time}"
+        )
