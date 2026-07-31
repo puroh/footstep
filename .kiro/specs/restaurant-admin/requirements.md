@@ -94,3 +94,14 @@ The restaurant-admin module provides restaurant owners with tools to configure t
 4. WHEN the owner saves the schedule, THE system SHALL persist it and use it to restrict order placement.
 5. IF no schedule is configured (zero days enabled), THEN THE system SHALL treat the restaurant as always open (no restriction).
 6. THE system SHALL validate that the closing time is after the opening time for each enabled day.
+
+
+### Requirement 7: Logout
+
+**User Story:** As a restaurant owner, I want a logout button visible in the management panel, so that I can close my session securely.
+
+#### Acceptance Criteria
+
+1. THE management panel SHALL display a "Cerrar sesión" button accessible from any page within the admin section.
+2. WHEN the owner presses "Cerrar sesión", THE system SHALL clear the stored tokens (access and refresh) and redirect to the login page.
+3. AFTER logout, THE system SHALL NOT allow access to any protected admin page until the owner logs in again.
