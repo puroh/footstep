@@ -80,3 +80,17 @@ The restaurant-admin module provides restaurant owners with tools to configure t
 2. THE management panel SHALL allow the owner to remove a product's highlight label.
 3. THE frontend SHALL display the highlight label on the product card in the client-facing menu when set.
 4. A product SHALL appear only once in its category regardless of whether it has a highlight label.
+
+
+### Requirement 6: Operating Hours Configuration
+
+**User Story:** As a restaurant owner, I want to configure my restaurant's operating hours by day of week, so that clients cannot place orders outside of business hours.
+
+#### Acceptance Criteria
+
+1. THE management panel SHALL display a schedule configuration section in the settings page with all seven days of the week.
+2. THE system SHALL allow the owner to enable or disable each day individually (disabled days mean the restaurant is closed).
+3. FOR each enabled day, THE system SHALL allow setting an opening time and a closing time.
+4. WHEN the owner saves the schedule, THE system SHALL persist it and use it to restrict order placement.
+5. IF no schedule is configured (zero days enabled), THEN THE system SHALL treat the restaurant as always open (no restriction).
+6. THE system SHALL validate that the closing time is after the opening time for each enabled day.

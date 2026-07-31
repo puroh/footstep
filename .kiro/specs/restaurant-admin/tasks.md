@@ -157,6 +157,15 @@ Build the restaurant-admin module from scratch: Django backend (models, auth, AP
   - Verify: `./init.sh` runs cleanly from a clean state
   - _Requirements: —_
 
+- [x] 17. Operating hours configuration
+  - [x] 17.1 Create `OperatingHour` model (weekday 0-6, open_time, close_time, unique per restaurant+weekday)
+  - [x] 17.2 Create migration `0006_add_operating_hours`
+  - [x] 17.3 Create `OperatingHourSerializer` with open_time < close_time validation
+  - [x] 17.4 Create `GET/PUT /api/v1/restaurants/me/operating-hours/` endpoint (bulk replace)
+  - [x] 17.5 Add schedule configuration UI section in SettingsForm (7-day toggle + time inputs)
+  - Verify: save schedule → persisted; unconfigured = always open; close_time < open_time rejected
+  - _Requirements: R6.1, R6.2, R6.3, R6.4, R6.5, R6.6_
+
 ## Notes
 
 - No automated tests — time constraint decision (see `ARCHITECTURE.md`).

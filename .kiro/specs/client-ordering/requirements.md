@@ -116,3 +116,18 @@ Depends on: restaurant-admin module (restaurant with products and payment method
 5. THE order tracking page SHALL be responsive and usable on both mobile phones and desktop computers.
 6. THE order tracking page SHALL be accessible without authentication using only the reference number in the URL.
 7. IF the reference number does not exist, THEN THE system SHALL display an error message indicating the order was not found.
+
+
+### Requirement 9: Operating Hours Restriction
+
+**User Story:** As a client, I want to know when a restaurant is outside its operating hours, so that I don't place orders that won't be fulfilled.
+
+#### Acceptance Criteria
+
+1. WHEN the client accesses the menu and the restaurant is outside its operating hours, THE system SHALL display a "Sin servicio" badge in red in the restaurant header area (next to the logo, name, and address).
+2. WHEN the restaurant is outside operating hours, THE system SHALL disable the "Pagar" (Pay) button, preventing the client from advancing to the checkout flow.
+3. THE system SHALL allow the client to continue browsing the menu (viewing products and adding to cart) even when the restaurant is closed.
+4. THE system SHALL re-evaluate the operating hours status periodically (at least every 60 seconds) without requiring a page refresh.
+5. WHEN the restaurant is outside operating hours and the client has items in the cart, THE system SHALL display an explanatory message below the order bar indicating that orders cannot be placed at this time.
+6. THE backend SHALL reject order creation attempts outside operating hours with a descriptive error message, as a secondary safeguard in case the frontend restriction is bypassed.
+7. IF the restaurant has no operating hours configured, THEN THE system SHALL treat it as always open and impose no restriction.

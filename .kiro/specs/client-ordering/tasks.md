@@ -169,6 +169,15 @@ Public-facing ordering module that allows clients to browse a restaurant menu vi
 - [x] 9. Final checkpoint — Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
+- [x] 10. Operating hours restriction
+  - [x] 10.1 Expose `operating_hours` in public menu endpoint (`PublicRestaurantSerializer`)
+  - [x] 10.2 Add operating hours validation in `PublicOrderCreateSerializer.validate()` — reject orders outside schedule
+  - [x] 10.3 Add `isRestaurantOpen()` helper in `PublicMenu.tsx` (converts JS weekday, compares current time)
+  - [x] 10.4 Show "Sin servicio" badge in restaurant header when closed
+  - [x] 10.5 Disable "Pagar" button with explanatory message when restaurant is outside operating hours
+  - [x] 10.6 Re-evaluate operating hours status every 60 seconds client-side
+  - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7_
+
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP
