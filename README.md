@@ -70,7 +70,16 @@ docker compose exec backend uv run python manage.py createsuperuser
 
 # 6. Verificar que todo está corriendo
 docker compose ps
+
+#7. Popular data en la base de datos 
+docker compose exec backend uv run python seed_data.py
 ```
+Restaurante	Email	Slug	Horario
+Burger Town (comida rápida)	burger@test.com	/8nr73io9	Lun-Dom 10:00-22:00
+Sakura Sushi (japonés)	sakura@test.com	/sr0ail42	Mar-Dom 11:00-21:00 (lunes cerrado)
+El Fogón Parrilla (parrilla)	fogon@test.com	/oe1fcynv	Mié-Dom 12:00-22:00 (lun-mar cerrado)
+Password para todos: test1234
+
 
 O simplemente ejecutar el script automatizado:
 

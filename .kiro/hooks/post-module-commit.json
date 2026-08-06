@@ -6,7 +6,7 @@
       "trigger": "PostTaskExec",
       "action": {
         "type": "command",
-        "command": "cd /home/diego/python/kiro/Tragon && git add -A && git commit -m \"feat: complete task $(date +%s)\" --allow-empty"
+        "command": "cd /home/diego/python/kiro/FoodStep && git add -A && git commit -m \"feat: complete task $(date +%s)\" --allow-empty"
       }
     }
   ]
